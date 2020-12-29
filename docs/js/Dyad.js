@@ -62,7 +62,7 @@ const [styles] = createStyles({
     height: "100%",
   },
   poleContainer: {
-    flexGrow: "1",
+    width: "20%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
@@ -74,7 +74,7 @@ const [styles] = createStyles({
     userSelect: "none",
   },
   sliderContainer: {
-    flexGrow: "4",
+    width: "80%",
     height: "100%",
   },
   slider: {
@@ -86,11 +86,9 @@ const [styles] = createStyles({
   },
   left: {
     backgroundColor: "white",
-    borderRight: "10px solid gold",
   },
   right: {
     backgroundColor: "white",
-    borderLeft: "10px solid gold",
   },
   dot: {
     width: "0px",
