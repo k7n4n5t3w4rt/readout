@@ -70,7 +70,7 @@ const [styles] = createStyles({
   },
   pole: {
     fontSize: "2em",
-    color: "gold",
+    color: "orange",
     userSelect: "none",
   },
   sliderContainer: {
@@ -84,17 +84,12 @@ const [styles] = createStyles({
     flexDirection: "column",
     justifyContent: "center",
   },
-  left: {
-    backgroundColor: "white",
-  },
-  right: {
-    backgroundColor: "white",
-  },
   dot: {
-    width: "0px",
-    height: "0px",
+    width: "40px",
+    height: "40px",
     borderRadius: "20px",
-    border: "20px solid orange",
+    backgroundColor: "orange",
+    border: "1px solid red",
     position: "absolute",
   },
 });
@@ -113,7 +108,6 @@ const Dyad = (props /*: Props */) => {
     // }
 
     let x /*: number */ = 0;
-    let y /*: number */ = 0;
     let isMoving /*: boolean */ = false;
 
     const dot /*: HTMLElement  | null */ =
@@ -123,39 +117,30 @@ const Dyad = (props /*: Props */) => {
       document.getElementById("slider") || null;
 
     const body /*: HTMLElement  | null */ = document.body || null;
-    // const circleLeft /*: HTMLElement  | null */ =
-    //   document.getElementById("circleLeft") || null;
-
-    // const circleRight /*: HTMLElement  | null */ =
-    //   document.getElementById("circleRight") || null;
 
     function moveDot(dot /*: HTMLElement */, x /*: number */) /*: void */ {
-      // console.log(x, y);
       dot.style.left = x + "px";
     }
-    if (dot !== null && slider !== null && body !== null) {
-      // Add the event listeners for mousedown, mousemove, and mouseup
-      dot.addEventListener("mousedown", (e /*: MouseEvent */) /*: void */ => {
-        x = e.offsetX;
-        y = e.offsetY;
-        isMoving = true;
-      });
-      body.addEventListener("mouseup", (e /*: MouseEvent */) /*: void */ => {
-        const percentage = Math.round((x / (slider.offsetWidth - 40)) * 100);
-        console.log("Percentage", percentage);
-        isMoving = false;
-      });
-      dot.addEventListener("mousemove", (e /*: MouseEvent */) /*: void */ => {
-        // e.stopPropagation();
-      });
+    function startMove() /*: void */ {
+      isMoving = true;
+    }
+    function stopMove(slider /*: HTMLElement */) /*: void */ {
+      const percentage = Math.round((x / (slider.offsetWidth - 40)) * 100);
+      console.log("Percentage", percentage);
+      isMoving = false;
+    }
 
-      slider.addEventListener("mousemove", (
-        e /*: MouseEvent */,
-      ) /*: void */ => {
-        if (isMoving === true) {
-          x = e.clientX - slider.getBoundingClientRect().left - 20;
+    function movingTouch(
+      slider /*: HTMLElement */,
+      dot /*: HTMLElement */,
+      e /*: TouchEvent */,
+    ) /*: void */ {
+      if (isMoving === true) {
+        const touchItem = e.targetTouches.item(0) || null;
 
-          // console.log(e.currentTarget);
+        if (touchItem !== null) {
+          console.log(touchItem.screenX);
+          x = touchItem.screenX - slider.getBoundingClientRect().left - 20;
 
           if (x > slider.offsetWidth - 40) {
             x = slider.offsetWidth - 40;
@@ -167,26 +152,69 @@ const Dyad = (props /*: Props */) => {
           // y = e.offsetY - 40;
           moveDot(dot, x);
         }
+      }
+    }
+
+    function movingMouse(
+      slider /*: HTMLElement */,
+      dot /*: HTMLElement */,
+      e /*: MouseEvent */,
+    ) /*: void */ {
+      if (isMoving === true) {
+        console.log(e.clientX);
+        x = e.clientX - slider.getBoundingClientRect().left - 20;
+
+        // console.log(e.currentTarget);
+
+        if (x > slider.offsetWidth - 40) {
+          x = slider.offsetWidth - 40;
+        }
+
+        if (x < 0) {
+          x = 0;
+        }
+        // y = e.offsetY - 40;
+        moveDot(dot, x);
+      }
+    }
+
+    if (dot !== null && slider !== null && body !== null) {
+      // Add the event listeners for mousedown, mousemove, and mouseup
+      dot.addEventListener("mousedown", (e /*: MouseEvent */) /*: void */ => {
+        startMove();
       });
 
-      window.addEventListener("mouseup", (e /*: MouseEvent */) /*: void */ => {
-        if (isMoving === true) {
-          isMoving = false;
-        }
+      slider.addEventListener("mousemove", (
+        e /*: MouseEvent */,
+      ) /*: void */ => {
+        movingMouse(slider, dot, e);
       });
-    } else {
-      // console.log("dot not set...");
+
+      body.addEventListener("mouseup", (e /*: MouseEvent */) /*: void */ => {
+        stopMove(slider);
+      });
+
+      // Add the event listeners for touchstart, touchmove, and touchend
+      dot.addEventListener("touchstart", (e /*: TouchEvent */) /*: void */ => {
+        console.log("touchstart");
+        startMove();
+      });
+
+      slider.addEventListener("touchmove", (
+        e /*: TouchEvent */,
+      ) /*: void */ => {
+        console.log("touchmove");
+        movingTouch(slider, dot, e);
+      });
+
+      body.addEventListener("touchend", (e /*: TouchEvent */) /*: void */ => {
+        stopMove(slider);
+      });
     }
   });
 
   return html`
     <div className="${styles.container}">
-      <!-- <h1 data-cy="heading" className="${styles.heading}">
-        Readout
-      </h1>
-      <h2 data-cy="subheading" className="${styles.subHeading}">
-        A quick readout from the room.
-      </h2> -->
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
