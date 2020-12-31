@@ -61,18 +61,34 @@ const FullscreenToggle = (props /*: Props */) => {
 
     // Fullscreen toggling
     if (fullscreen !== null && fullscreenExit !== null) {
-      fullscreen.addEventListener("touchend", (
+      fullscreen.addEventListener("touchstart", (
         e /*: TouchEvent */,
       ) /*: void */ => {
-        // console.log("touchstart");
+        console.log("touchstart");
         if (screenfull.isEnabled) {
           screenfull.request();
         }
       });
-      fullscreenExit.addEventListener("touchend", (
+      fullscreenExit.addEventListener("touchstart", (
         e /*: TouchEvent */,
       ) /*: void */ => {
-        console.log("touchend");
+        console.log("touchstart");
+        if (screenfull.isEnabled) {
+          screenfull.exit();
+        }
+      });
+      fullscreen.addEventListener("mousedown", (
+        e /*: MouseEvent */,
+      ) /*: void */ => {
+        console.log("mousedown");
+        if (screenfull.isEnabled) {
+          screenfull.request();
+        }
+      });
+      fullscreenExit.addEventListener("mousedown", (
+        e /*: MouseEvent */,
+      ) /*: void */ => {
+        console.log("mousedown");
         if (screenfull.isEnabled) {
           screenfull.exit();
         }
@@ -84,6 +100,11 @@ const FullscreenToggle = (props /*: Props */) => {
     return html` <div className="${styles.fullscreen}">
       <i
         ontouchstart="${(e /*: TouchEvent */) /*: void */ => {
+          console.log("touchstart");
+          props.setFullscreenToggle(true);
+        }}"
+        onmousedown="${(e /*: MouseEvent */) /*: void */ => {
+          console.log("mousedown");
           props.setFullscreenToggle(true);
         }}"
         id="fullscreen"
@@ -91,9 +112,6 @@ const FullscreenToggle = (props /*: Props */) => {
         >fullscreen</i
       >
       <i
-        ontouchstart="${(e /*: TouchEvent */) /*: void */ => {
-          props.setFullscreenToggle(false);
-        }}"
         id="fullscreenExit"
         className="material-icons ${styles.fullscreenIconHide}"
         >fullscreen_exit</i
@@ -101,16 +119,16 @@ const FullscreenToggle = (props /*: Props */) => {
     </div>`;
   } else {
     return html` <div className="${styles.fullscreen}">
-      <i
-        ontouchstart="${(e /*: TouchEvent */) /*: void */ => {
-          props.setFullscreenToggle(true);
-        }}"
-        id="fullscreen"
-        className="material-icons ${styles.fullscreenIconHide}"
+      <i id="fullscreen" className="material-icons ${styles.fullscreenIconHide}"
         >fullscreen</i
       >
       <i
         ontouchstart="${(e /*: TouchEvent */) /*: void */ => {
+          console.log("touchstart");
+          props.setFullscreenToggle(false);
+        }}"
+        onmousedown="${(e /*: MouseEvent */) /*: void */ => {
+          console.log("mousedown");
           props.setFullscreenToggle(false);
         }}"
         id="fullscreenExit"
