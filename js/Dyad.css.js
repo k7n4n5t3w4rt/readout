@@ -24,15 +24,6 @@ export default {
     paddingRight: "20px",
     height: "100%",
   },
-  fullscreen: {
-    position: "absolute",
-    top: "0px",
-    right: "0px",
-  },
-  fullscreenIcon: {
-    fontSize: "5rem",
-    color: "gold",
-  },
   dyad: {
     display: "flex",
     justifyContent: "space-between",

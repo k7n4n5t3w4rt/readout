@@ -7,6 +7,7 @@ import {
 } from "../web_modules/preact/hooks.js";
 import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
+import FullscreenToggle from "./FullscreenToggle.js";
 import {
   rawStyles,
   createStyles,
@@ -38,14 +39,12 @@ type Props = {
 */
 const Dyad = (props /*: Props */) => {
   const [state /*: AppState */, dispatch] = useContext(AppContext);
-  const [fullscreen /*: boolean */, setFullscreen] = useState(false);
+  const [fullscreenToggle /*: boolean */, setFullscreenToggle] = useState(
+    false,
+  );
 
   useEffect(() => {
     // Check that the DOM elements exist
-    const fullscreen /*: HTMLElement  | null */ =
-      document.getElementById("fullscreen") || null;
-    const fullscreenExit /*: HTMLElement  | null */ =
-      document.getElementById("fullscreenExit") || null;
     const dot /*: HTMLElement  | null */ =
       document.getElementById("dot") || null;
     const slider /*: HTMLElement  | null */ =
@@ -57,29 +56,6 @@ const Dyad = (props /*: Props */) => {
       x: 0,
     };
     const isMoving /*: Object */ = { status: false };
-
-    if (fullscreen !== null) {
-      fullscreen.addEventListener("touchstart", (
-        e /*: TouchEvent */,
-      ) /*: void */ => {
-        // console.log("touchstart");
-        if (screenfull.isEnabled) {
-          screenfull.request();
-          setFullscreen(true);
-        }
-      });
-    }
-    if (fullscreenExit !== null) {
-      fullscreenExit.addEventListener("touchstart", (
-        e /*: TouchEvent */,
-      ) /*: void */ => {
-        // console.log("touchstart");
-        if (screenfull.isEnabled) {
-          screenfull.exit();
-          setFullscreen(false);
-        }
-      });
-    }
 
     if (dot !== null && slider !== null && body !== null) {
       // Add the event listeners for mousedown, mousemove, and mouseup
@@ -137,27 +113,14 @@ const Dyad = (props /*: Props */) => {
         DyadMoves.stopMove(slider, position, isMoving);
       });
     }
-  });
+  }, []);
 
   return html`
     <div className="${styles.container}">
-      <div className="${styles.fullscreen}">
-        ${(() => {
-          if (!fullscreen) {
-            return html`<i
-              id="fullscreen"
-              className="material-icons ${styles.fullscreenIcon}"
-              >fullscreen</i
-            >`;
-          } else {
-            return html`<i
-              id="fullscreenExit"
-              className="material-icons ${styles.fullscreenIcon}"
-              >fullscreen_exit</i
-            >`;
-          }
-        })()}
-      </div>
+      <${FullscreenToggle}
+        fullscreenToggle="${fullscreenToggle}"
+        setFullscreenToggle="${setFullscreenToggle}"
+      />
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
