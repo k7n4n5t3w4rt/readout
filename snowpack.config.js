@@ -12,6 +12,7 @@ module.exports = {
     "preact/hooks",
     "preact-render-to-string",
     "preact-router",
+    "screenfull",
     "should/as-function.js",
     "simplestyle-js",
   ],

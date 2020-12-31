@@ -1,3 +1,5 @@
+import { c as createCommonjsModule } from '../common/_commonjsHelpers-1d2f7e84.js';
+
 var global$1 = (typeof global !== "undefined" ? global :
   typeof self !== "undefined" ? self :
   typeof window !== "undefined" ? window : {});
@@ -2557,20 +2559,6 @@ function eq(a, b, opts) {
 }
 
 eq.EQ = EQ;
-
-function createCommonjsModule(fn, basedir, module) {
-	return module = {
-	  path: basedir,
-	  exports: {},
-	  require: function (path, base) {
-      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
-    }
-	}, fn(module, module.exports), module.exports;
-}
-
-function commonjsRequire () {
-	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
-}
 
 var _hasOwnProperty = Object.prototype.hasOwnProperty;
 var _propertyIsEnumerable = Object.prototype.propertyIsEnumerable;

@@ -6,12 +6,15 @@ import {
   useState,
 } from "../web_modules/preact/hooks.js";
 import htm from "../web_modules/htm.js";
+import screenfull from "../web_modules/screenfull.js";
 import {
   rawStyles,
   createStyles,
   setSeed,
 } from "../web_modules/simplestyle-js.js";
 import { AppContext } from "./AppContext.js";
+import DyadCss from "./Dyad.css.js";
+import DyadMoves from "./DyadMoves.js";
 
 const html = htm.bind(h);
 const seed /*: number */ = parseInt(
@@ -27,72 +30,7 @@ setSeed(seed);
 
 rawStyles({});
 
-const [styles] = createStyles({
-  container: {
-    fontFamily: "sans-serif",
-    textAlign: "center",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  heading: {
-    fontSize: "2em",
-    color: "gold",
-  },
-  subHeading: {
-    fontSize: "2em",
-    color: "gold",
-  },
-  buttons: {
-    fontSize: "2em",
-  },
-  dyadContainer: {
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    height: "100%",
-  },
-  dyad: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginLeft: "20px",
-    marginRight: "20px",
-    paddingTop: "20px",
-    paddingBottom: "20px",
-    height: "100%",
-  },
-  poleContainer: {
-    width: "20%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  pole: {
-    fontSize: "2em",
-    color: "orange",
-    userSelect: "none",
-  },
-  sliderContainer: {
-    width: "80%",
-    height: "100%",
-  },
-  slider: {
-    position: "relative",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  dot: {
-    width: "40px",
-    height: "40px",
-    borderRadius: "20px",
-    backgroundColor: "orange",
-    border: "1px solid red",
-    position: "absolute",
-  },
-});
+const [styles] = createStyles(DyadCss);
 
 /*::
 type Props = {
@@ -100,121 +38,126 @@ type Props = {
 */
 const Dyad = (props /*: Props */) => {
   const [state /*: AppState */, dispatch] = useContext(AppContext);
-  //const [count /*: number */, setCount] = useState(props.count);
+  const [fullscreen /*: boolean */, setFullscreen] = useState(false);
 
   useEffect(() => {
-    // if (typeof state.count !== "undefined") {
-    //   setCount(state.count);
-    // }
-
-    let x /*: number */ = 0;
-    let isMoving /*: boolean */ = false;
-
+    // Check that the DOM elements exist
+    const fullscreen /*: HTMLElement  | null */ =
+      document.getElementById("fullscreen") || null;
+    const fullscreenExit /*: HTMLElement  | null */ =
+      document.getElementById("fullscreenExit") || null;
     const dot /*: HTMLElement  | null */ =
       document.getElementById("dot") || null;
-
     const slider /*: HTMLElement  | null */ =
       document.getElementById("slider") || null;
-
     const body /*: HTMLElement  | null */ = document.body || null;
 
-    function moveDot(dot /*: HTMLElement */, x /*: number */) /*: void */ {
-      dot.style.left = x + "px";
-    }
-    function startMove() /*: void */ {
-      isMoving = true;
-    }
-    function stopMove(slider /*: HTMLElement */) /*: void */ {
-      const percentage = Math.round((x / (slider.offsetWidth - 40)) * 100);
-      console.log("Percentage", percentage);
-      isMoving = false;
-    }
+    // Set some properties
+    const position /*: Object */ = {
+      x: 0,
+    };
+    const isMoving /*: Object */ = { status: false };
 
-    function movingTouch(
-      slider /*: HTMLElement */,
-      dot /*: HTMLElement */,
-      e /*: TouchEvent */,
-    ) /*: void */ {
-      if (isMoving === true) {
-        const touchItem = e.targetTouches.item(0) || null;
-
-        if (touchItem !== null) {
-          console.log(touchItem.screenX);
-          x = touchItem.screenX - slider.getBoundingClientRect().left - 20;
-
-          if (x > slider.offsetWidth - 40) {
-            x = slider.offsetWidth - 40;
-          }
-
-          if (x < 0) {
-            x = 0;
-          }
-          // y = e.offsetY - 40;
-          moveDot(dot, x);
+    if (fullscreen !== null) {
+      fullscreen.addEventListener("touchstart", (
+        e /*: TouchEvent */,
+      ) /*: void */ => {
+        // console.log("touchstart");
+        if (screenfull.isEnabled) {
+          screenfull.request();
+          setFullscreen(true);
         }
-      }
+      });
     }
-
-    function movingMouse(
-      slider /*: HTMLElement */,
-      dot /*: HTMLElement */,
-      e /*: MouseEvent */,
-    ) /*: void */ {
-      if (isMoving === true) {
-        console.log(e.clientX);
-        x = e.clientX - slider.getBoundingClientRect().left - 20;
-
-        // console.log(e.currentTarget);
-
-        if (x > slider.offsetWidth - 40) {
-          x = slider.offsetWidth - 40;
+    if (fullscreenExit !== null) {
+      fullscreenExit.addEventListener("touchstart", (
+        e /*: TouchEvent */,
+      ) /*: void */ => {
+        // console.log("touchstart");
+        if (screenfull.isEnabled) {
+          screenfull.exit();
+          setFullscreen(false);
         }
-
-        if (x < 0) {
-          x = 0;
-        }
-        // y = e.offsetY - 40;
-        moveDot(dot, x);
-      }
+      });
     }
 
     if (dot !== null && slider !== null && body !== null) {
       // Add the event listeners for mousedown, mousemove, and mouseup
       dot.addEventListener("mousedown", (e /*: MouseEvent */) /*: void */ => {
-        startMove();
+        // console.log("mousedown");
+        DyadMoves.startMove(isMoving);
+        // console.log(isMoving.status);
       });
 
       slider.addEventListener("mousemove", (
         e /*: MouseEvent */,
       ) /*: void */ => {
-        movingMouse(slider, dot, e);
+        if (isMoving.status === true) {
+          // console.log("mousemove");
+        }
+        DyadMoves.movingMouse(
+          slider,
+          dot,
+          e,
+          position,
+          isMoving,
+          DyadMoves.moveDot,
+        );
       });
 
       body.addEventListener("mouseup", (e /*: MouseEvent */) /*: void */ => {
-        stopMove(slider);
+        // console.log("mouseup");
+        DyadMoves.stopMove(slider, position, isMoving);
+        // console.log(isMoving.status);
       });
 
       // Add the event listeners for touchstart, touchmove, and touchend
       dot.addEventListener("touchstart", (e /*: TouchEvent */) /*: void */ => {
-        console.log("touchstart");
-        startMove();
+        // console.log("touchstart");
+        DyadMoves.startMove(isMoving);
+        // console.log(isMoving.status);
       });
 
       slider.addEventListener("touchmove", (
         e /*: TouchEvent */,
       ) /*: void */ => {
-        console.log("touchmove");
-        movingTouch(slider, dot, e);
+        // console.log("touchmove");
+        DyadMoves.movingTouch(
+          slider,
+          dot,
+          e,
+          position,
+          isMoving,
+          DyadMoves.moveDot,
+        );
       });
 
       body.addEventListener("touchend", (e /*: TouchEvent */) /*: void */ => {
-        stopMove(slider);
+        // console.log("touchend");
+        DyadMoves.stopMove(slider, position, isMoving);
       });
     }
   });
 
   return html`
     <div className="${styles.container}">
+      <div className="${styles.fullscreen}">
+        ${(() => {
+          if (!fullscreen) {
+            return html`<i
+              id="fullscreen"
+              className="material-icons ${styles.fullscreenIcon}"
+              >fullscreen</i
+            >`;
+          } else {
+            return html`<i
+              id="fullscreenExit"
+              className="material-icons ${styles.fullscreenIcon}"
+              >fullscreen_exit</i
+            >`;
+          }
+        })()}
+      </div>
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
