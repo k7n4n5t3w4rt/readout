@@ -16,12 +16,17 @@ const reducer = (state, action) =>
   // https://www.pika.dev/npm/@vve/immer
   produce(state, (draft) => {
     if (action.type === "coordinates") {
-      console.log("coordinates:", action.payload);
+      console.log("reducer() - coordinates:", action.payload);
       draft.coordinates = action.payload;
     }
+    if (action.type === "fullscreenToggle") {
+      console.log("reducer() - fullscreenToggle:", action.payload);
+      draft.fullscreenToggle = action.payload;
+    }
     if (action.type === "reset") {
-      console.log("resetting coordinates:", action.payload);
+      console.log("reducer() - reset:", action.payload);
       draft.coordinates = action.payload.coordinates;
+      draft.fullscreenToggle = action.payload.fullscreenToggle;
     }
   });
 

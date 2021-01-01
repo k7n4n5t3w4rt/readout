@@ -29,7 +29,7 @@ const App /*: function */ = (props /*: Props */) => {
   return html`
     <${AppProvider} >
       <${Router} url="${props.url}">
-        <${Dyad} path="/" pole1="${pole1}" pole2="${pole2}" />
+        <${Dyad}  pole1="${pole1}" pole2="${pole2}" path="/" />
       </${Router}>
     </${AppProvider} >
   `;

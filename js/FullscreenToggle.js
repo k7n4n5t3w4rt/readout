@@ -37,6 +37,7 @@ const [styles] = createStyles({
   fullscreenIcon: {
     fontSize: "5rem",
     color: "gold",
+    cursor: "pointer",
   },
   fullscreenIconHide: {
     display: "none",
@@ -45,8 +46,6 @@ const [styles] = createStyles({
 
 /*::
 type Props = {
-  fullscreenToggle: boolean,
-  setFullscreenToggle: function
 };
 */
 const FullscreenToggle = (props /*: Props */) => {
@@ -59,15 +58,19 @@ const FullscreenToggle = (props /*: Props */) => {
     const fullscreenExit /*: HTMLElement  | null */ =
       document.getElementById("fullscreenExit") || null;
 
+    if (typeof state.fullscreenToggle === "undefined") {
+      dispatch({ type: "fullscreenToggle", payload: false });
+    }
+
     // Fullscreen toggling
-    if (fullscreen !== null && props.fullscreenToggle === false) {
+    if (fullscreen !== null && state.fullscreenToggle === false) {
       fullscreen.addEventListener(
         "touchstart",
         (e /*: TouchEvent */) /*: void */ => {
           if (screenfull.isEnabled) {
             console.log("touchstart");
             screenfull.request();
-            props.setFullscreenToggle(true);
+            dispatch({ type: "fullscreenToggle", payload: true });
             e.preventDefault();
           }
         },
@@ -76,22 +79,22 @@ const FullscreenToggle = (props /*: Props */) => {
       fullscreen.addEventListener(
         "mousedown",
         (e /*: MouseEvent */) /*: void */ => {
-          if (screenfull.isEnabled && props.fullscreenToggle === false) {
+          if (screenfull.isEnabled && state.fullscreenToggle === false) {
             console.log("mousedown");
             screenfull.request();
-            props.setFullscreenToggle(true);
+            dispatch({ type: "fullscreenToggle", payload: true });
           }
         },
         { once: true },
       );
-    } else if (fullscreenExit !== null && props.fullscreenToggle === true) {
+    } else if (fullscreenExit !== null && state.fullscreenToggle === true) {
       fullscreenExit.addEventListener(
         "touchstart",
         (e /*: TouchEvent */) /*: void */ => {
-          if (screenfull.isEnabled && props.fullscreenToggle === true) {
+          if (screenfull.isEnabled && state.fullscreenToggle === true) {
             console.log("touchstart");
             screenfull.exit();
-            props.setFullscreenToggle(false);
+            dispatch({ type: "fullscreenToggle", payload: false });
             e.preventDefault();
           }
         },
@@ -100,18 +103,18 @@ const FullscreenToggle = (props /*: Props */) => {
       fullscreenExit.addEventListener(
         "mousedown",
         (e /*: MouseEvent */) /*: void */ => {
-          if (screenfull.isEnabled && props.fullscreenToggle === true) {
+          if (screenfull.isEnabled && state.fullscreenToggle === true) {
             console.log("mousedown");
             screenfull.exit();
-            props.setFullscreenToggle(false);
+            dispatch({ type: "fullscreenToggle", payload: false });
           }
         },
         { once: true },
       );
     }
-  }, [props.fullscreenToggle]);
+  }, [state.fullscreenToggle]);
 
-  if (props.fullscreenToggle === false) {
+  if (state.fullscreenToggle === false) {
     return html` <div cy-data="fullscreen" className="${styles.fullscreen}">
       <i id="fullscreen" className="material-icons ${styles.fullscreenIcon}"
         >fullscreen</i

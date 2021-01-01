@@ -9,8 +9,9 @@ import RequestPromiseType from "./request_promise.js";
 
 copyStaticFiles();
 
-appPaths().forEach((url /*: string */) /*: Promise<any> */ =>
-  requestPromise({
+appPaths().forEach((url /*: string */) /*: Promise<any> */ => {
+  console.log(url);
+  return requestPromise({
     hostname: "localhost",
     port: 4000,
     method: "GET",
@@ -21,4 +22,5 @@ appPaths().forEach((url /*: string */) /*: Promise<any> */ =>
     })
     .catch((e) => {
       console.log(e);
-    }));
+    });
+});

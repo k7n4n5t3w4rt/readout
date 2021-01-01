@@ -43,10 +43,6 @@ const Dyad = (props /*: Props */) => {
   const [state /*: AppState */, dispatch /*: function */] = useContext(
     AppContext,
   );
-  const [
-    fullscreenToggle /*: boolean */,
-    setFullscreenToggle /*: function */,
-  ] = useState(false);
 
   useEffect(() => {
     // Check that the DOM elements exist
@@ -127,13 +123,9 @@ const Dyad = (props /*: Props */) => {
     const slider /*: HTMLElement  | null */ =
       document.getElementById("slider") || null;
 
-    if (
-      dot !== null &&
-      slider !== null &&
-      typeof state.coordinates !== "undefined" &&
-      typeof state.coordinates.x !== "undefined" &&
-      state.coordinates.x > 0
-    ) {
+    if (typeof state.coordinates === "undefined") {
+      // dispatch({ type: "coordinates", payload: { x: 0 } });
+    } else if (dot !== null && slider !== null) {
       // Set some properties
       const position /*: Object */ = {
         x: Math.round(state.coordinates.x * (slider.offsetWidth - 40)) / 100,
@@ -143,14 +135,11 @@ const Dyad = (props /*: Props */) => {
       console.log("useEffect: State change...", state);
       DyadMoves.moveDot(dot, position);
     }
-  }, [state]);
+  }, [state.coordinates]);
 
   return html`
     <div className="${styles.container}">
-      <${FullscreenToggle}
-        fullscreenToggle="${fullscreenToggle}"
-        setFullscreenToggle="${setFullscreenToggle}"
-      />
+      <${FullscreenToggle} />
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
