@@ -1,3 +1,9 @@
+type AppState = {
+  coordinates: {
+    x: number,
+  },
+};
+
 declare module "finalhandler" {
   declare module.exports: any;
 }

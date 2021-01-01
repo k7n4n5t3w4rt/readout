@@ -64,4 +64,9 @@ export default {
     border: "1px solid red",
     position: "absolute",
   },
+  button: {
+    position: "absolute",
+    bottom: "10px",
+    right: "10px",
+  },
 };

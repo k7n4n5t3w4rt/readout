@@ -35,13 +35,18 @@ const [styles] = createStyles(DyadCss);
 
 /*::
 type Props = {
+  pole1: string,
+  pole2: string,
 };
 */
 const Dyad = (props /*: Props */) => {
-  const [state /*: AppState */, dispatch] = useContext(AppContext);
-  const [fullscreenToggle /*: boolean */, setFullscreenToggle] = useState(
-    false,
+  const [state /*: AppState */, dispatch /*: function */] = useContext(
+    AppContext,
   );
+  const [
+    fullscreenToggle /*: boolean */,
+    setFullscreenToggle /*: function */,
+  ] = useState(false);
 
   useEffect(() => {
     // Check that the DOM elements exist
@@ -51,13 +56,13 @@ const Dyad = (props /*: Props */) => {
       document.getElementById("slider") || null;
     const body /*: HTMLElement  | null */ = document.body || null;
 
-    // Set some properties
-    const position /*: Object */ = {
-      x: 0,
-    };
-    const isMoving /*: Object */ = { status: false };
-
     if (dot !== null && slider !== null && body !== null) {
+      // Set some properties - x:0 is just a placeholder
+      const position /*: Object */ = {
+        x: 0,
+      };
+      const isMoving /*: Object */ = { status: false };
+
       // Add the event listeners for mousedown, mousemove, and mouseup
       dot.addEventListener("mousedown", (e /*: MouseEvent */) /*: void */ => {
         // console.log("mousedown");
@@ -83,7 +88,7 @@ const Dyad = (props /*: Props */) => {
 
       body.addEventListener("mouseup", (e /*: MouseEvent */) /*: void */ => {
         // console.log("mouseup");
-        DyadMoves.stopMove(slider, position, isMoving);
+        DyadMoves.stopMove(slider, position, isMoving, dispatch);
         // console.log(isMoving.status);
       });
 
@@ -110,10 +115,35 @@ const Dyad = (props /*: Props */) => {
 
       body.addEventListener("touchend", (e /*: TouchEvent */) /*: void */ => {
         // console.log("touchend");
-        DyadMoves.stopMove(slider, position, isMoving);
+        DyadMoves.stopMove(slider, position, isMoving, dispatch);
       });
     }
   }, []);
+
+  useEffect(() => {
+    // Check that the DOM elements exist
+    const dot /*: HTMLElement  | null */ =
+      document.getElementById("dot") || null;
+    const slider /*: HTMLElement  | null */ =
+      document.getElementById("slider") || null;
+
+    if (
+      dot !== null &&
+      slider !== null &&
+      typeof state.coordinates !== "undefined" &&
+      typeof state.coordinates.x !== "undefined" &&
+      state.coordinates.x > 0
+    ) {
+      // Set some properties
+      const position /*: Object */ = {
+        x: Math.round(state.coordinates.x * (slider.offsetWidth - 40)) / 100,
+      };
+      const isMoving /*: Object */ = { status: false };
+      // Put the slider into position
+      console.log("useEffect: State change...", state);
+      DyadMoves.moveDot(dot, position);
+    }
+  }, [state]);
 
   return html`
     <div className="${styles.container}">
@@ -124,8 +154,12 @@ const Dyad = (props /*: Props */) => {
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
-            <div id="poleLeft" className="${styles.pole} ${styles.left}">
-              Left
+            <div
+              id="poleLeft"
+              data-cy="pole1"
+              className="${styles.pole} ${styles.left}"
+            >
+              ${props.pole1}
             </div>
           </div>
           <div className="${styles.sliderContainer}">
@@ -134,12 +168,24 @@ const Dyad = (props /*: Props */) => {
             </div>
           </div>
           <div className="${styles.poleContainer}">
-            <div id="poleRight" className="${styles.pole} ${styles.right}">
-              Right
+            <div
+              id="poleRight"
+              data-cy="pole2"
+              className="${styles.pole} ${styles.right}"
+            >
+              ${props.pole2}
             </div>
           </div>
         </div>
       </div>
+      <button
+        data-cy="go"
+        class="btn-small blue waves-effect waves-light ${styles.button}"
+        type="button"
+      >
+        Go
+        <i class="material-icons right">login</i>
+      </button>
     </div>
   `;
 };

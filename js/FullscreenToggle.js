@@ -112,14 +112,17 @@ const FullscreenToggle = (props /*: Props */) => {
   }, [props.fullscreenToggle]);
 
   if (props.fullscreenToggle === false) {
-    return html` <div className="${styles.fullscreen}">
+    return html` <div cy-data="fullscreen" className="${styles.fullscreen}">
       <i id="fullscreen" className="material-icons ${styles.fullscreenIcon}"
         >fullscreen</i
       >
     </div>`;
   } else {
     return html` <div className="${styles.fullscreen}">
-      <i id="fullscreenExit" className="material-icons ${styles.fullscreenIcon}"
+      <i
+        id="fullscreenExit"
+        cy-data="fullscreen"
+        className="material-icons ${styles.fullscreenIcon}"
         >fullscreen_exit</i
       >
     </div>`;

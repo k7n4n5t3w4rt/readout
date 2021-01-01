@@ -12,10 +12,24 @@ type Props = {
 };
 */
 const App /*: function */ = (props /*: Props */) => {
+  let searchParams = "";
+  let pole1;
+  let pole2;
+  // Browser only
+  if (typeof process === "undefined" || process.release.name !== "node") {
+    // $FlowFixMe
+    searchParams /*: URLSearchParams */ = new URLSearchParams(
+      window.location.search,
+    );
+    // $FlowFixMe
+    pole1 = searchParams.get("pole1") || "Left";
+    // $FlowFixMe
+    pole2 = searchParams.get("pole2") || "Right";
+  }
   return html`
     <${AppProvider} >
       <${Router} url="${props.url}">
-        <${Dyad} path="/" />
+        <${Dyad} path="/" pole1="${pole1}" pole2="${pole2}" />
       </${Router}>
     </${AppProvider} >
   `;

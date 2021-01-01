@@ -10,10 +10,12 @@ export default {
     slider /*: HTMLElement */,
     position /*: Object */,
     isMoving /*: Object */,
+    dispatch /*: function */,
   ) /*: void */ => {
     const percentage = Math.round(
       (position.x / (slider.offsetWidth - 40)) * 100,
     );
+    dispatch({ type: "coordinates", payload: { x: percentage } });
     // console.log("Percentage", percentage);
     isMoving.status = false;
   },

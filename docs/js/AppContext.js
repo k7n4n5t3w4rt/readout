@@ -15,19 +15,13 @@ const AppContext = createContext([{}, () => {}]);
 const reducer = (state, action) =>
   // https://www.pika.dev/npm/@vve/immer
   produce(state, (draft) => {
-    let count /*: number */;
-    if (action.type === "add") {
-      count = state.count || action.payload;
-      count++;
-      draft.count = count;
-    }
-    if (action.type === "subtract") {
-      count = state.count || action.payload;
-      count--;
-      draft.count = count;
+    if (action.type === "coordinates") {
+      console.log("coordinates:", action.payload);
+      draft.coordinates = action.payload;
     }
     if (action.type === "reset") {
-      draft.count = action.payload.count;
+      console.log("resetting coordinates:", action.payload);
+      draft.coordinates = action.payload.coordinates;
     }
   });
 
