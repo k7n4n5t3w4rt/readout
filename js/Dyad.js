@@ -1,5 +1,6 @@
 // @flow
 import { h, render } from "../web_modules/preact.js";
+import { route } from "../web_modules/preact-router.js";
 import {
   useContext,
   useEffect,
@@ -176,13 +177,33 @@ const Dyad = (props /*: Props */) => {
           fetch(
             `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${props.sessionId}&position=${state.coordinates.x}`,
             {
-              mode: "no-cors",
+              method: "GET", // *GET, POST, PUT, DELETE, etc.
+              mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
+              cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+              credentials: "same-origin", // include, *same-origin, omit
+              headers: {
+                "Content-Type": "application/json",
+              },
+              redirect: "follow", // manual, *follow, error
+              referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             },
-          );
+          )
+            .then((response /*: Object */) /*: Promise<string> */ => {
+              //return "{}";
+              return response.json();
+            })
+            .then((data /*: Object */) /*: void */ => {
+              if (data.status === "success") {
+                route(`/readout?sessionId=${props.sessionId}`);
+              }
+            })
+            .catch((e /*: Error */) /*: void */ => {
+              console.error(e);
+            });
         }}"
       >
-        Go
-        <i class="material-icons right">login</i>
+        Save
+        <i class="material-icons right">save</i>
       </button>
     </div>
   `;

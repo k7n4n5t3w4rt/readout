@@ -1,5 +1,6 @@
 // @flow
 import { h, render } from "../web_modules/preact.js";
+import { route } from "../web_modules/preact-router.js";
 import {
   useContext,
   useEffect,
@@ -37,6 +38,7 @@ const [styles] = createStyles(DyadCss);
 type Props = {
   pole1: string,
   pole2: string,
+  sessionId: string
 };
 */
 const Dyad = (props /*: Props */) => {
@@ -128,7 +130,7 @@ const Dyad = (props /*: Props */) => {
     } else if (dot !== null && slider !== null) {
       // Set some properties
       const position /*: Object */ = {
-        x: Math.round(state.coordinates.x * (slider.offsetWidth - 40)) / 100,
+        x: Math.round((state.coordinates.x * (slider.offsetWidth - 40)) / 100),
       };
       const isMoving /*: Object */ = { status: false };
       // Put the slider into position
@@ -146,7 +148,7 @@ const Dyad = (props /*: Props */) => {
             <div
               id="poleLeft"
               data-cy="pole1"
-              className="${styles.pole} ${styles.left}"
+              className="${styles.pole} ${styles.pole1}"
             >
               ${props.pole1}
             </div>
@@ -160,7 +162,7 @@ const Dyad = (props /*: Props */) => {
             <div
               id="poleRight"
               data-cy="pole2"
-              className="${styles.pole} ${styles.right}"
+              className="${styles.pole} ${styles.pole2}"
             >
               ${props.pole2}
             </div>
@@ -171,9 +173,37 @@ const Dyad = (props /*: Props */) => {
         data-cy="go"
         class="btn-small blue waves-effect waves-light ${styles.button}"
         type="button"
+        onclick="${(e /*: MouseEvent */) /*: void */ => {
+          fetch(
+            `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${props.sessionId}&position=${state.coordinates.x}`,
+            {
+              method: "GET", // *GET, POST, PUT, DELETE, etc.
+              mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
+              cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+              credentials: "same-origin", // include, *same-origin, omit
+              headers: {
+                "Content-Type": "application/json",
+              },
+              redirect: "follow", // manual, *follow, error
+              referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            },
+          )
+            .then((response /*: Object */) /*: Promise<string> */ => {
+              //return "{}";
+              return response.json();
+            })
+            .then((data /*: Object */) /*: void */ => {
+              if (data.status === "success") {
+                route(`/readout?sessionId=${props.sessionId}`);
+              }
+            })
+            .catch((e /*: Error */) /*: void */ => {
+              console.error(e);
+            });
+        }}"
       >
-        Go
-        <i class="material-icons right">login</i>
+        Save
+        <i class="material-icons right">save</i>
       </button>
     </div>
   `;

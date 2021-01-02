@@ -1,6 +1,7 @@
 // @flow
 import { h } from "../web_modules/preact.js";
 import Dyad from "./Dyad.js";
+import DyadReadout from "./DyadReadout.js";
 import Router from "../web_modules/preact-router.js";
 import htm from "../web_modules/htm.js";
 import { AppProvider } from "./AppContext.js";
@@ -13,8 +14,9 @@ type Props = {
 */
 const App /*: function */ = (props /*: Props */) => {
   let searchParams = "";
-  let pole1;
-  let pole2;
+  let pole1 = "Left";
+  let pole2 = "Right";
+  let sessionId = "example";
   // Browser only
   if (typeof process === "undefined" || process.release.name !== "node") {
     // $FlowFixMe
@@ -25,11 +27,14 @@ const App /*: function */ = (props /*: Props */) => {
     pole1 = searchParams.get("pole1") || "Left";
     // $FlowFixMe
     pole2 = searchParams.get("pole2") || "Right";
+    // $FlowFixMe
+    sessionId = searchParams.get("sessionId") || "example";
   }
   return html`
     <${AppProvider} >
       <${Router} url="${props.url}">
-        <${Dyad}  pole1="${pole1}" pole2="${pole2}" path="/" />
+        <${Dyad} sessionId="${sessionId}" pole1="${pole1}" pole2="${pole2}" path="/" />
+        <${DyadReadout} sessionId="${sessionId}" pole1="${pole1}" pole2="${pole2}" path="/readout" />
       </${Router}>
     </${AppProvider} >
   `;
