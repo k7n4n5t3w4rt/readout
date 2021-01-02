@@ -28,6 +28,10 @@ const reducer = (state, action) =>
       draft.coordinates = action.payload.coordinates;
       draft.fullscreenToggle = action.payload.fullscreenToggle;
     }
+    if (action.type === "readout") {
+      console.log("reducer() - others:", action.payload);
+      draft.readout = action.payload;
+    }
   });
 
 /*::

@@ -46,14 +46,54 @@ const DyadReadout = (props /*: Props */) => {
 
   useEffect(() => {
     // Check that the DOM elements exist
-    const dot /*: HTMLElement  | null */ =
-      document.getElementById("dot") || null;
     const slider /*: HTMLElement  | null */ =
       document.getElementById("slider") || null;
+    const button /*: HTMLElement  | null */ =
+      document.getElementById("button") || null;
 
-    if (dot !== null && slider !== null) {
+    if (slider !== null && button !== null) {
+      button.addEventListener("click", (e /*: MouseEvent */) /*: void */ => {
+        fetch(
+          `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${props.sessionId}`,
+          {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              "Content-Type": "application/json",
+            },
+            redirect: "follow", // manual, *follow, error
+            referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          },
+        )
+          .then((response /*: Object */) /*: Promise<string> */ => {
+            //return "{}";
+            return response.json();
+          })
+          .then((data /*: Object */) /*: void */ => {
+            const others /*: Array<number> */ = data[props.sessionId] || [];
+
+            if (others.length > 0) {
+              const positions /*: Array<number> */ = others.map((
+                x /*: number */,
+              ) /*: number */ => {
+                // This is where we turn the percentage into an x position
+                const position /*: number */ = Math.round(
+                  (x * (slider.offsetWidth - 40)) / 100,
+                );
+                console.log(x, position);
+                return position;
+              });
+              dispatch({ type: "readout", payload: positions });
+            }
+          })
+          .catch((e /*: Error */) /*: void */ => {
+            console.error(e);
+          });
+      });
     }
-  }, [state.readout]);
+  });
 
   return html`
     <div className="${styles.container}">
@@ -70,7 +110,12 @@ const DyadReadout = (props /*: Props */) => {
             </div>
           </div>
           <div className="${styles.sliderContainer}">
-            <div id="slider" className="${styles.slider}"></div>
+            <div id="slider" className="${styles.slider}">
+              ${typeof state.readout !== "undefined" &&
+              htm`${state.readout.map((x /*: number */) => {
+                return htm`<div id="dot" className="${styles.dot} ${styles.circle}"></div>`;
+              })}`}
+            </div>
           </div>
           <div className="${styles.poleContainer}">
             <div
@@ -84,35 +129,10 @@ const DyadReadout = (props /*: Props */) => {
         </div>
       </div>
       <button
+        id="button"
         data-cy="read"
         class="btn-small blue waves-effect waves-light ${styles.button}"
         type="button"
-        onclick="${(e /*: MouseEvent */) /*: void */ => {
-          fetch(
-            `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${props.sessionId}`,
-            {
-              method: "GET", // *GET, POST, PUT, DELETE, etc.
-              mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
-              cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-              credentials: "same-origin", // include, *same-origin, omit
-              headers: {
-                "Content-Type": "application/json",
-              },
-              redirect: "follow", // manual, *follow, error
-              referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            },
-          )
-            .then((response /*: Object */) /*: Promise<string> */ => {
-              //return "{}";
-              return response.json();
-            })
-            .then((data /*: string */) /*: void */ => {
-              console.log(data);
-            })
-            .catch((e /*: Error */) /*: void */ => {
-              console.error(e);
-            });
-        }}"
       >
         Read
         <i class="material-icons right">login</i>

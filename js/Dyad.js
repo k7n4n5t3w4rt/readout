@@ -129,7 +129,7 @@ const Dyad = (props /*: Props */) => {
     } else if (dot !== null && slider !== null) {
       // Set some properties
       const position /*: Object */ = {
-        x: Math.round(state.coordinates.x * (slider.offsetWidth - 40)) / 100,
+        x: Math.round((state.coordinates.x * (slider.offsetWidth - 40)) / 100),
       };
       const isMoving /*: Object */ = { status: false };
       // Put the slider into position
