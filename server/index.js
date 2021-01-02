@@ -23,6 +23,21 @@ var serveAsStatic = serveStatic(".", {
 });
 
 const requestHandler = (req, res) => {
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+    "Access-Control-Max-Age": 2592000, // 30 days
+    "Access-Control-Allow-Headers":
+      "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
+    /** add other headers as per requirement */
+  };
+  if (req.method === "OPTIONS") {
+    // $FlowFixMe
+    res.writeHead(204, headers);
+    res.end();
+    return;
+  }
+
   req.url = req.url.replace(/\/$/, "");
   // NOTE: The trailing "/" doesn't seem to matter
   // to `preact-router` when `/js/App.js` is being

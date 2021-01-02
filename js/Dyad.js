@@ -37,6 +37,7 @@ const [styles] = createStyles(DyadCss);
 type Props = {
   pole1: string,
   pole2: string,
+  sessionId: string
 };
 */
 const Dyad = (props /*: Props */) => {
@@ -146,7 +147,7 @@ const Dyad = (props /*: Props */) => {
             <div
               id="poleLeft"
               data-cy="pole1"
-              className="${styles.pole} ${styles.left}"
+              className="${styles.pole} ${styles.pole1}"
             >
               ${props.pole1}
             </div>
@@ -160,7 +161,7 @@ const Dyad = (props /*: Props */) => {
             <div
               id="poleRight"
               data-cy="pole2"
-              className="${styles.pole} ${styles.right}"
+              className="${styles.pole} ${styles.pole2}"
             >
               ${props.pole2}
             </div>
@@ -171,6 +172,14 @@ const Dyad = (props /*: Props */) => {
         data-cy="go"
         class="btn-small blue waves-effect waves-light ${styles.button}"
         type="button"
+        onclick="${(e /*: MouseEvent */) /*: void */ => {
+          fetch(
+            `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${props.sessionId}&position=${state.coordinates.x}`,
+            {
+              mode: "no-cors",
+            },
+          );
+        }}"
       >
         Go
         <i class="material-icons right">login</i>

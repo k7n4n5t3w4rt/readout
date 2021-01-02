@@ -45,6 +45,12 @@ export default {
     color: "orange",
     userSelect: "none",
   },
+  pole1: {
+    borderRight: "1px solid orange",
+  },
+  pole2: {
+    borderLeft: "1px solid orange",
+  },
   sliderContainer: {
     width: "80%",
     height: "100%",
