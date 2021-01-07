@@ -47,9 +47,11 @@ export default {
   },
   pole1: {
     borderRight: "1px solid orange",
+    paddingRight: "5px",
   },
   pole2: {
     borderLeft: "1px solid orange",
+    paddingLeft: "5px",
   },
   sliderContainer: {
     width: "80%",
