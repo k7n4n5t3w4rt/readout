@@ -8,6 +8,7 @@ import {
 import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
 import FullscreenToggle from "./FullscreenToggle.js";
+import config from "./config.js";
 import Version from "./Version.js";
 import Dot from "./Dot.js";
 import {

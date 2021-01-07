@@ -179,7 +179,9 @@ const Dyad = (props /*: Props */) => {
         onclick="${(e /*: MouseEvent */) /*: void */ => {
           window.navigator.vibrate(200);
           fetch(
-            `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${props.sessionId}&position=${state.coordinates.x}`,
+            `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${
+              props.sessionId
+            }&position=${state.coordinates.x || 0}`,
             {
               method: "GET", // *GET, POST, PUT, DELETE, etc.
               mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
@@ -202,6 +204,7 @@ const Dyad = (props /*: Props */) => {
               }
             })
             .catch((e /*: Error */) /*: void */ => {
+              alert(e.message);
               console.error(e);
             });
         }}"
