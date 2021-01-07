@@ -10,11 +10,11 @@ export default {
   },
   heading: {
     fontSize: "2em",
-    color: "gold",
+    color: "orange",
   },
   subHeading: {
     fontSize: "2em",
-    color: "gold",
+    color: "orange",
   },
   buttons: {
     fontSize: "2em",

@@ -113,6 +113,8 @@ const renderToString = (
     re_env_REMEMBER_ME,
     conf.REMEMBER_ME.toString(),
   );
+  const re_env_VERSION = new RegExp("_VERSION_", "g");
+  renderedContent = renderedContent.replace(re_env_VERSION, conf.VERSION);
   return renderedContent;
 };
 

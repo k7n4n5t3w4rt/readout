@@ -8,6 +8,8 @@ import {
 } from "../web_modules/preact/hooks.js";
 import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
+import config from "./config.js";
+import Version from "./Version.js";
 import FullscreenToggle from "./FullscreenToggle.js";
 import {
   rawStyles,
@@ -141,6 +143,7 @@ const Dyad = (props /*: Props */) => {
 
   return html`
     <div className="${styles.container}">
+      <${Version} version="${config.VERSION}" />
       <${FullscreenToggle} />
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
@@ -174,6 +177,7 @@ const Dyad = (props /*: Props */) => {
         class="btn-small blue waves-effect waves-light ${styles.button}"
         type="button"
         onclick="${(e /*: MouseEvent */) /*: void */ => {
+          window.navigator.vibrate(200);
           fetch(
             `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${props.sessionId}&position=${state.coordinates.x}`,
             {

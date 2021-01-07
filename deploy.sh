@@ -1,1 +1,3 @@
-git subtree push --prefix public origin gh-pages
+git add *
+git commit -m"Deploying..."
+git push

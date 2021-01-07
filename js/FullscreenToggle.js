@@ -36,7 +36,7 @@ const [styles] = createStyles({
   },
   fullscreenIcon: {
     fontSize: "5rem",
-    color: "gold",
+    color: "orange",
     cursor: "pointer",
   },
   fullscreenIconHide: {
@@ -65,48 +65,27 @@ const FullscreenToggle = (props /*: Props */) => {
     // Fullscreen toggling
     if (fullscreen !== null && state.fullscreenToggle === false) {
       fullscreen.addEventListener(
-        "touchstart",
-        (e /*: TouchEvent */) /*: void */ => {
+        "click",
+        (e /*: MouseEvent */) /*: void */ => {
+          window.navigator.vibrate(200);
           if (screenfull.isEnabled) {
-            console.log("touchstart");
             screenfull.request();
             dispatch({ type: "fullscreenToggle", payload: true });
             e.preventDefault();
-          }
-        },
-        { once: true },
-      );
-      fullscreen.addEventListener(
-        "mousedown",
-        (e /*: MouseEvent */) /*: void */ => {
-          if (screenfull.isEnabled && state.fullscreenToggle === false) {
-            console.log("mousedown");
-            screenfull.request();
-            dispatch({ type: "fullscreenToggle", payload: true });
           }
         },
         { once: true },
       );
     } else if (fullscreenExit !== null && state.fullscreenToggle === true) {
       fullscreenExit.addEventListener(
-        "touchstart",
-        (e /*: TouchEvent */) /*: void */ => {
+        "click",
+        (e /*: MouseEvent */) /*: void */ => {
+          window.navigator.vibrate(200);
           if (screenfull.isEnabled && state.fullscreenToggle === true) {
             console.log("touchstart");
             screenfull.exit();
             dispatch({ type: "fullscreenToggle", payload: false });
             e.preventDefault();
-          }
-        },
-        { once: true },
-      );
-      fullscreenExit.addEventListener(
-        "mousedown",
-        (e /*: MouseEvent */) /*: void */ => {
-          if (screenfull.isEnabled && state.fullscreenToggle === true) {
-            console.log("mousedown");
-            screenfull.exit();
-            dispatch({ type: "fullscreenToggle", payload: false });
           }
         },
         { once: true },

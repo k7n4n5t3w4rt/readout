@@ -8,6 +8,7 @@ import {
 import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
 import FullscreenToggle from "./FullscreenToggle.js";
+import Version from "./Version.js";
 import Dot from "./Dot.js";
 import {
   rawStyles,
@@ -63,6 +64,7 @@ const DyadReadout = (props /*: Props */) => {
   return html`
     <div className="${styles.container}">
       <${FullscreenToggle} />
+      <${Version} version="${config.VERSION}" />
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
