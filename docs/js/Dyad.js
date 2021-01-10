@@ -174,7 +174,7 @@ const Dyad = (props /*: Props */) => {
       </div>
       <button
         data-cy="go"
-        class="btn-small blue waves-effect waves-light ${styles.button}"
+        class="btn-small ${styles.button}"
         type="button"
         onclick="${(e /*: MouseEvent */) /*: void */ => {
           window.navigator.vibrate(200);
