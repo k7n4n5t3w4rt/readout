@@ -180,10 +180,12 @@ const Dyad = (props /*: Props */) => {
           try {
             window.navigator.vibrate(200);
           } catch (e) {}
+          let x /*: number */ = 0;
+          if (typeof state.coordinates !== "undefined") {
+            x = state.coordinates.x || 0;
+          }
           fetch(
-            `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${
-              props.sessionId
-            }&position=${state.coordinates.x || 0}`,
+            `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${props.sessionId}&position=${x}`,
             {
               method: "GET", // *GET, POST, PUT, DELETE, etc.
               mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
