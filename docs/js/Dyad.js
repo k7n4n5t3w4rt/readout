@@ -177,7 +177,9 @@ const Dyad = (props /*: Props */) => {
         class="btn-small ${styles.button}"
         type="button"
         onclick="${(e /*: MouseEvent */) /*: void */ => {
-          window.navigator.vibrate(200);
+          try {
+            window.navigator.vibrate(200);
+          } catch (e) {}
           fetch(
             `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${
               props.sessionId
