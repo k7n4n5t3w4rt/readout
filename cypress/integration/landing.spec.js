@@ -1,51 +1,33 @@
+// @Flow
 /// <reference types="cypress" />
 
 context("Actions", () => {
   beforeEach(() => {
-    // cy.visit("http://localhost:4000?pole1=PoleOne&pole2=PoleTwo");
+    cy.visit("http://localhost:4000");
   });
   afterEach(() => {
     sessionStorage.clear();
     localStorage.clear();
   });
 
-  // https://on.cypress.io/interacting-with-elements
-
-  it("Route / | Has pole1 and pole2 from the query string", () => {
-    cy.visit("http://localhost:4000?pole1=PoleOne&pole2=PoleTwo");
-    cy.get("div[data-cy=pole1]").should("contain", "PoleOne");
-    cy.get("div[data-cy=pole2]").should("contain", "PoleTwo");
+  it("Route / | Has the pole1 and pole2 input fields", () => {
+    cy.get("input[data-cy=pole1]").should("exist");
+    cy.get("input[data-cy=pole2]").should("exist");
   });
 
-  it("Route / | Has default values when pole1 and pole2 are not in the query string", () => {
-    cy.visit("http://localhost:4000");
-    cy.get("div[data-cy=pole1]").should("contain", "Left");
-    cy.get("div[data-cy=pole2]").should("contain", "Right");
-    cy.visit("http://localhost:4000/?pole1=PoleOne");
-    cy.get("div[data-cy=pole1]").should("contain", "PoleOne");
-    cy.get("div[data-cy=pole2]").should("contain", "Right");
-    cy.visit("http://localhost:4000/?pole2=PoleTwo");
-    cy.get("div[data-cy=pole1]").should("contain", "Left");
-    cy.get("div[data-cy=pole2]").should("contain", "PoleTwo");
-  });
-
-  it("Route / | The fullscreen button is present", () => {
-    cy.visit("http://localhost:4000");
-    cy.get("div[data-cy=fullscreen]").should("be", "visible");
-  });
-
-  it("Route / | The GO button is present", () => {
-    cy.visit("http://localhost:4000");
+  it("Route /| The GO button is present", () => {
     cy.get("button[data-cy=go]").should("be", "visible");
   });
-  // it("Route / | Plus and minus work ok", () => {
-  //   cy.get("button[data-cy=plus]").click();
-  //   cy.get("button[data-cy=plus]").click();
-  //   cy.get("button[data-cy=plus]").click();
-  //   cy.get("h2[data-cy=number-display]").should("contain", "4");
-  //   cy.get("button[data-cy=minus]").click();
-  //   cy.get("button[data-cy=minus]").click();
-  //   cy.get("button[data-cy=minus]").click();
-  //   cy.get("h2[data-cy=number-display]").should("contain", "1");
-  // });
+
+  it("Route /| The GO button submits the form", () => {
+    cy.get("input[data-cy=pole1]").type("Pole One");
+    cy.get("input[data-cy=pole2]").type("Pole Two");
+    cy.get("button[data-cy=go]").click({ force: true });
+    cy.location("search").should(
+      "contain",
+      "?pole1=Pole%20One&pole2=Pole%20Two&sessionId=",
+    );
+    cy.get("div[data-cy=pole1]").should("contain", "Pole One");
+    cy.get("div[data-cy=pole2]").should("contain", "Pole Two");
+  });
 });
