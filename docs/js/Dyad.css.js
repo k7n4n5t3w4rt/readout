@@ -2,10 +2,18 @@
 export default {
   container: {
     fontFamily: "sans-serif",
-    textAlign: "center",
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
+  },
+  formContainer: {
+    width: "80%",
+    maxWidth: "400px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "flex",
+    flexDirection: "row",
     justifyContent: "center",
   },
   heading: {
@@ -46,6 +54,7 @@ export default {
     userSelect: "none",
   },
   pole1: {
+    textAlign: "right",
     borderRight: "1px solid orange",
     paddingRight: "5px",
   },

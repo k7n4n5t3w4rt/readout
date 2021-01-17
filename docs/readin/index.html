@@ -56,42 +56,25 @@
 	<div class="fullscreen_gvmmtdbiffbey">
 		<i id="fullscreenExit" cy-data="fullscreen" class="material-icons fullscreenIcon_gvmmtdbiffbey">fullscreen_exit</i>
 	</div>
-	<div class="formContainer_ecfbf">
-		<form action="/readin" method="GET">
-			<fieldset>
-				<div class="row">
-					<div class="input-field">
-						<input type="text" data-cy="pole1" name="pole1" size="40" pattern="[A-Za-z0-9 ]+" title="Letters, numbers and spaces only." required />
-						<label class="no-pointer-event" for="pole1">
-							Pole One
-							<abbr title="required" aria-label="required">*</abbr>
-						</label>
-						<div class="helper-text" data-cy="key-helper-text">
-							This is the label for the left side of the dyad slider.
-						</div>
-					</div>
+	<div class="dyadContainer_ecfbj">
+		<div id="dyad" class="dyad_ecfca">
+			<div class="poleContainer_ecfcb">
+				<div id="poleLeft" data-cy="pole1" class="pole_ecfcc pole1_ecfcd">Left</div>
+			</div>
+			<div class="sliderContainer_ecfcf">
+				<div id="slider" class="slider_ecfcg">
+					<div id="dot" class="dot_ecfch undefined"></div>
 				</div>
-				<div class="row undefined">
-					<div class="input-field">
-						<input type="text" data-cy="pole2" name="pole2" size="40" pattern="[A-Za-z0-9 ]+" title="Letters, numbers and spaces only." required />
-						<label class="no-pointer-event" for="pole2">
-							Pole Two
-							<abbr title="required" aria-label="required">*</abbr>
-						</label>
-						<div class="helper-text" data-cy="key-helper-text">
-							This is the label for the right side of the dyad slider.
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<button data-cy="go" class="btn-small blue" type="submit">
-						Go
-						<i class="material-icons right">login</i>
-					</button>
-				</div>
-			</fieldset>
-		</form>
+			</div>
+			<div class="poleContainer_ecfcb">
+				<div id="poleRight" data-cy="pole2" class="pole_ecfcc pole2_ecfce">Right</div>
+			</div>
+		</div>
 	</div>
+	<button data-cy="go" class="btn-small button_ecfci" type="button">
+		Save
+		<i class="material-icons right">save</i>
+	</button>
 </div></div data-goodthing>
 	<!-- <script type="text/javascript" src="/js/vendor/materialize.js"></script> -->
 </body>

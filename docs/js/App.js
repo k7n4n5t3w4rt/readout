@@ -1,6 +1,7 @@
 // @flow
 import { h } from "../web_modules/preact.js";
 import Dyad from "./Dyad.js";
+import DyadReadin from "./DyadReadin.js";
 import DyadReadout from "./DyadReadout.js";
 import Router from "../web_modules/preact-router.js";
 import htm from "../web_modules/htm.js";
@@ -34,6 +35,7 @@ const App /*: function */ = (props /*: Props */) => {
     <${AppProvider} >
       <${Router} url="${props.url}">
         <${Dyad} sessionId="${sessionId}" pole1="${pole1}" pole2="${pole2}" path="/" />
+        <${DyadReadin} sessionId="${sessionId}" pole1="${pole1}" pole2="${pole2}" path="/readin" />
         <${DyadReadout} sessionId="${sessionId}" pole1="${pole1}" pole2="${pole2}" path="/readout" />
       </${Router}>
     </${AppProvider} >
