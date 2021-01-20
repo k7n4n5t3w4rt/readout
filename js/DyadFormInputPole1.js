@@ -31,7 +31,7 @@ const DyadFormInputPole1 = (props /*: Props */) => {
         >Pole One<abbr title="required" aria-label="required">*</abbr></label
       >
       <div class="helper-text" data-cy="key-helper-text">
-        This is the label for the left side of the dyad slider.
+        This is the label for the left side of the slider.
       </div>
     </div>
   `;
