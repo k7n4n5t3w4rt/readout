@@ -204,7 +204,9 @@ const DyadReadin = (props /*: Props */) => {
             })
             .then((data /*: Object */) /*: void */ => {
               if (data.status === "success") {
-                route(`/readout?sessionId=${props.sessionId}`);
+                route(
+                  `/readout?pole1=${props.pole1}&pole2=${props.pole2}&sessionId=${props.sessionId}`,
+                );
               }
             })
             .catch((e /*: Error */) /*: void */ => {
