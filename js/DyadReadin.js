@@ -179,7 +179,8 @@ const DyadReadin = (props /*: Props */) => {
         onclick="${(e /*: MouseEvent */) /*: void */ => {
           try {
             window.navigator.vibrate(200);
-          } catch (e) {}
+          } catch (error) {}
+
           let x /*: number */ = 0;
           if (typeof state.coordinates !== "undefined") {
             x = state.coordinates.x || 0;

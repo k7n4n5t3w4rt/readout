@@ -1,5 +1,10 @@
 // @flow
 export default {
+  savePosition: (
+    sessionId /*: string */,
+    state /*: Object */,
+  ) /*: void */ => {},
+
   moveDot: (dot /*: HTMLElement */, position /*: Object */) /*: void */ => {
     dot.style.left = position.x + "px";
   },
