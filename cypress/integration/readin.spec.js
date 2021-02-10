@@ -34,14 +34,4 @@ context("Actions", () => {
     cy.get("div[data-cy=fullscreen]").should("be", "visible");
     cy.get("button[data-cy=go]").should("be", "visible");
   });
-
-  it("Route /readin | The GO button submits the form", () => {
-    cy.visit(
-      "http://localhost:4000/readin?pole1=Pole%20One&pole2=Pole%20Two&sessionId=1610882364201",
-    );
-    cy.get("button[data-cy=go]").click({ force: true });
-    cy.location("search").should("contain", "?sessionId=1610882364201");
-    cy.get("div[data-cy=pole1]").should("contain", "Pole One");
-    cy.get("div[data-cy=pole2]").should("contain", "Pole Two");
-  });
 });
