@@ -22,6 +22,10 @@ const reducer = (state, action) =>
       //console.log("reducer() - sessionId:", action.payload);
       draft.sessionId = action.payload;
     }
+    if (action.type === "uniqueId") {
+      //console.log("reducer() - uniqueId:", action.payload);
+      draft.uniqueId = action.payload;
+    }
     if (action.type === "coordinates") {
       //console.log("reducer() - coordinates:", action.payload);
       draft.coordinates = action.payload;

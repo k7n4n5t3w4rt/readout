@@ -29,9 +29,8 @@ context("Actions", () => {
     cy.get("div[data-cy=pole2]").should("contain", "PoleTwo");
   });
 
-  it("Route /readin | The fullscreen button is present and the GO button is present", () => {
+  it("Route /readin | The fullscreen button is present", () => {
     cy.visit("http://localhost:4000/readin");
     cy.get("div[data-cy=fullscreen]").should("be", "visible");
-    cy.get("button[data-cy=go]").should("be", "visible");
   });
 });

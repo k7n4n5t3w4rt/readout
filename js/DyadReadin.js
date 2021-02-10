@@ -48,7 +48,8 @@ const [styles] = createStyles(DyadCss);
 type Props = {
   pole1: string,
   pole2: string,
-  sessionId: string
+  sessionId: string,
+  uniqueId: string
 };
 */
 const DyadReadin = (props /*: Props */) => {
@@ -67,6 +68,7 @@ const DyadReadin = (props /*: Props */) => {
     if (dot !== null && slider !== null && body !== null) {
       console.log("Adding EventListeners (happens on load)");
       dispatch({ type: "sessionId", payload: props.sessionId });
+      dispatch({ type: "uniqueId", payload: props.uniqueId });
       // Set some properties - x:0 is just a placeholder
       const position /*: Object */ = {
         x: 0,
@@ -147,7 +149,12 @@ const DyadReadin = (props /*: Props */) => {
         (e /*: TouchEvent */) /*: void */ => {
           //console.log("touchend");
           DyadMoves.stopMove(slider, position, isMoving, dispatch);
-          DyadMoves.savePosition(slider, state.sessionId, position);
+          DyadMoves.savePosition(
+            slider,
+            state.sessionId,
+            state.uniqueId,
+            position,
+          );
         },
         { once: false },
       );
