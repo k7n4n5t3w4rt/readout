@@ -53,12 +53,12 @@ glob("**/*.testy.js", function (e, testies) {
           flatMessages.push(message.replace(/ok/, `ok ${counter}`));
         });
       });
-      console.log(`1..${flatMessages.length}`);
+      //console.log(`1..${flatMessages.length}`);
       flatMessages.forEach((message /*: string */) /*: void */ => {
-        console.log(message);
+        //console.log(message);
       });
     })
     .catch((fail /*: string */) /*: void */ => {
-      console.log(fail);
+      //console.log(fail);
     });
 });

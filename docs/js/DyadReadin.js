@@ -65,16 +65,16 @@ const DyadReadin = (props /*: Props */) => {
 
       // Add the event listeners for mousedown, mousemove, and mouseup
       dot.addEventListener("mousedown", (e /*: MouseEvent */) /*: void */ => {
-        // console.log("mousedown");
+        //console.log("mousedown");
         DyadMoves.startMove(isMoving);
-        // console.log(isMoving.status);
+        //console.log(isMoving.status);
       });
 
       slider.addEventListener("mousemove", (
         e /*: MouseEvent */,
       ) /*: void */ => {
         if (isMoving.status === true) {
-          // console.log("mousemove");
+          //console.log("mousemove");
         }
         DyadMoves.movingMouse(
           slider,
@@ -87,22 +87,22 @@ const DyadReadin = (props /*: Props */) => {
       });
 
       body.addEventListener("mouseup", (e /*: MouseEvent */) /*: void */ => {
-        // console.log("mouseup");
+        //console.log("mouseup");
         DyadMoves.stopMove(slider, position, isMoving, dispatch);
-        // console.log(isMoving.status);
+        //console.log(isMoving.status);
       });
 
       // Add the event listeners for touchstart, touchmove, and touchend
       dot.addEventListener("touchstart", (e /*: TouchEvent */) /*: void */ => {
-        // console.log("touchstart");
+        //console.log("touchstart");
         DyadMoves.startMove(isMoving);
-        // console.log(isMoving.status);
+        //console.log(isMoving.status);
       });
 
       slider.addEventListener("touchmove", (
         e /*: TouchEvent */,
       ) /*: void */ => {
-        // console.log("touchmove");
+        //console.log("touchmove");
         DyadMoves.movingTouch(
           slider,
           dot,
@@ -114,7 +114,7 @@ const DyadReadin = (props /*: Props */) => {
       });
 
       body.addEventListener("touchend", (e /*: TouchEvent */) /*: void */ => {
-        // console.log("touchend");
+        //console.log("touchend");
         DyadMoves.stopMove(slider, position, isMoving, dispatch);
       });
     }
@@ -136,7 +136,7 @@ const DyadReadin = (props /*: Props */) => {
       };
       const isMoving /*: Object */ = { status: false };
       // Put the slider into position
-      console.log("useEffect: State change...", state);
+      //console.log("useEffect: State change...", state);
       DyadMoves.moveDot(dot, position);
     }
   }, [state.coordinates]);

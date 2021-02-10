@@ -17,7 +17,7 @@ export default {
         (position.x / (slider.offsetWidth - 40)) * 100,
       );
       dispatch({ type: "coordinates", payload: { x: percentage } });
-      // console.log("Percentage", percentage);
+      //console.log("Percentage", percentage);
       isMoving.status = false;
     }
   },
@@ -34,7 +34,7 @@ export default {
       const touchItem = e.targetTouches.item(0) || null;
 
       if (touchItem !== null) {
-        // console.log(touchItem.screenX);
+        //console.log(touchItem.screenX);
         position.x =
           touchItem.screenX - slider.getBoundingClientRect().left - 20;
 
@@ -60,10 +60,10 @@ export default {
     moveDot /*: function */,
   ) /*: void */ => {
     if (isMoving.status === true) {
-      // console.log(e.clientX);
+      //console.log(e.clientX);
       position.x = e.clientX - slider.getBoundingClientRect().left - 20;
 
-      // // console.log(e.currentTarget);
+      // //console.log(e.currentTarget);
 
       if (position.x > slider.offsetWidth - 40) {
         position.x = slider.offsetWidth - 40;

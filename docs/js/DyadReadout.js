@@ -20,6 +20,10 @@ import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
 
 const html = htm.bind(h);
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
 const seed /*: number */ = parseInt(
   "dyadreadout".split("").reduce(
     (acc /*: string */, letter /*: string */) /*: string */ => {
@@ -30,11 +34,12 @@ const seed /*: number */ = parseInt(
   ),
 );
 setSeed(seed);
-
 rawStyles({});
-
 const [styles] = createStyles(DyadCss);
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 /*::
 type Props = {
   pole1: string,
@@ -100,6 +105,9 @@ const DyadReadout = (props /*: Props */) => {
   `;
 };
 
+// -----------------------------------------------------------------------------
+// Functions
+// -----------------------------------------------------------------------------
 function fetchReadout(
   slider /*: HTMLElement */,
   sessionId /*: string */,
@@ -134,7 +142,7 @@ function fetchReadout(
           const position /*: number */ = Math.round(
             (x * (slider.offsetWidth - 40)) / 100,
           );
-          console.log(x, position);
+          //console.log(x, position);
           return position;
         });
         dispatch({ type: "readout", payload: positions });

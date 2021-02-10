@@ -10,7 +10,7 @@ import RequestPromiseType from "./request_promise.js";
 copyStaticFiles();
 
 appPaths().forEach((url /*: string */) /*: Promise<any> */ => {
-  console.log(url);
+  //console.log(url);
   return requestPromise({
     hostname: "localhost",
     port: 4000,
@@ -18,9 +18,9 @@ appPaths().forEach((url /*: string */) /*: Promise<any> */ => {
     path: url + "?generate=true",
   })
     .then(() /*: void */ => {
-      console.log(`Done: [`, url, `]`);
+      //console.log(`Done: [`, url, `]`);
     })
     .catch((e) => {
-      console.log(e);
+      //console.log(e);
     });
 });

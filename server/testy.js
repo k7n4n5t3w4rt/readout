@@ -15,9 +15,9 @@ export const test = (
   if (!skip !== "skip") {
     try {
       testFunction();
-      console.log("ok - " + message, ":)");
+      //console.log("ok - " + message, ":)");
     } catch (e) {
-      console.log("not ok - " + message, ":(");
+      //console.log("not ok - " + message, ":(");
       console.error(e.message);
     }
   }
@@ -31,10 +31,10 @@ export const testPromise = (
   if (skip !== "skip") {
     testFunction()
       .then(() => {
-        console.log("ok - " + message, ":)");
+        //console.log("ok - " + message, ":)");
       })
-      .catch(e => {
-        console.log("not ok - " + message, ":(");
+      .catch((e) => {
+        //console.log("not ok - " + message, ":(");
         console.error(e.message);
       });
   }

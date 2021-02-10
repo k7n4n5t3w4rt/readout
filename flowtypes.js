@@ -2,6 +2,8 @@ type AppState = {
   coordinates: {
     x: number,
   },
+  fullscreenToggle: boolean,
+  readout: Array<number>,
 };
 
 declare module "finalhandler" {

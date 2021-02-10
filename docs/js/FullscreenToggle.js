@@ -82,7 +82,7 @@ const FullscreenToggle = (props /*: Props */) => {
         (e /*: MouseEvent */) /*: void */ => {
           window.navigator.vibrate(200);
           if (screenfull.isEnabled && state.fullscreenToggle === true) {
-            console.log("touchstart");
+            //console.log("touchstart");
             screenfull.exit();
             dispatch({ type: "fullscreenToggle", payload: false });
             e.preventDefault();

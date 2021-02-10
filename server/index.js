@@ -62,21 +62,21 @@ const requestHandler = (req, res) => {
   ) {
     const output = staticCache.readFromCache(urlPath, cacheTtl);
     if (output !== false) {
-      // console.log("Cache: ", urlPath);
+      //console.log("Cache: ", urlPath);
       res.end(output);
     } else {
       const output = renderToString(urlPath, generate);
       staticCache.writeToCache(urlPath, output);
-      // console.log("Rendered: ", urlPath);
+      //console.log("Rendered: ", urlPath);
       res.end(output);
     }
   } else {
     const output = renderToString(urlPath, generate);
     if (forceCache === true) {
       staticCache.writeToCache(urlPath, output);
-      // console.log("Cached: ", urlPath);
+      //console.log("Cached: ", urlPath);
     }
-    // console.log("Rendered: ", urlPath);
+    //console.log("Rendered: ", urlPath);
     res.end(output);
   }
 };
@@ -122,8 +122,8 @@ const server = http.createServer(requestHandler);
 
 server.listen(conf.PORT, (err) => {
   if (err) {
-    return console.log("something bad happened", err);
+    return; //console.log("something bad happened", err);
   }
 
-  console.log(`server is listening on ${conf.PORT}`);
+  //console.log(`server is listening on ${conf.PORT}`);
 });

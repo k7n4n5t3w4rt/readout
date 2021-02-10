@@ -57,7 +57,7 @@ const DyadReadout = (props /*: Props */) => {
 
       const interval = setInterval(() => {
         fetchReadout(slider, props.sessionId, dispatch);
-      }, 3000);
+      }, 1000);
       return () => clearInterval(interval);
     }
   }, []);
@@ -134,7 +134,7 @@ function fetchReadout(
           const position /*: number */ = Math.round(
             (x * (slider.offsetWidth - 40)) / 100,
           );
-          console.log(x, position);
+          //console.log(x, position);
           return position;
         });
         dispatch({ type: "readout", payload: positions });
