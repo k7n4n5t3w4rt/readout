@@ -110,7 +110,12 @@ const DyadReadin = (props /*: Props */) => {
           (e /*: MouseEvent */) /*: void */ => {
             console.log("mouseup");
             DyadMoves.stopMove(slider, position, isMoving, dispatch);
-            DyadMoves.savePosition(slider, props.sessionId, position);
+            DyadMoves.savePosition(
+              slider,
+              props.sessionId,
+              props.uniqueId,
+              position,
+            );
             //console.log(isMoving.status);
           },
           { once: false },
