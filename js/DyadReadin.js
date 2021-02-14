@@ -49,13 +49,17 @@ type Props = {
   pole1: string,
   pole2: string,
   sessionId: string,
-  uniqueId: string
 };
 */
 const DyadReadin = (props /*: Props */) => {
   const [state /*: AppState */, dispatch /*: function */] = useContext(
     AppContext,
   );
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+  const uniqueId = getRandomInt(Date.now()).toString();
 
   // Happens once, on load
   useEffect(() => {
@@ -68,7 +72,7 @@ const DyadReadin = (props /*: Props */) => {
     if (dot !== null && slider !== null && body !== null) {
       console.log("Adding EventListeners (happens on load)");
       dispatch({ type: "sessionId", payload: props.sessionId });
-      dispatch({ type: "uniqueId", payload: props.uniqueId });
+      dispatch({ type: "uniqueId", payload: uniqueId });
       // Set some properties - x:0 is just a placeholder
       const position /*: Object */ = {
         x: 0,
@@ -110,12 +114,7 @@ const DyadReadin = (props /*: Props */) => {
           (e /*: MouseEvent */) /*: void */ => {
             console.log("mouseup");
             DyadMoves.stopMove(slider, position, isMoving, dispatch);
-            DyadMoves.savePosition(
-              slider,
-              props.sessionId,
-              props.uniqueId,
-              position,
-            );
+            DyadMoves.savePosition(slider, props.sessionId, uniqueId, position);
             //console.log(isMoving.status);
           },
           { once: false },

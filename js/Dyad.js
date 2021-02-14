@@ -55,12 +55,7 @@ const Dyad = (props /*: Props */) => {
   const [pole1, setPole1] = useState("");
   const [pole2, setPole2] = useState("");
 
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-
   const sessionId = Date.now().toString();
-  const uniqueId = getRandomInt(Date.now()).toString();
 
   return html`
     <div className="${styles.container}">
@@ -73,7 +68,7 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}&uniqueId=${uniqueId}`;
+            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
             const localReadoutLink = `readout?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
             // $FlowFixMe
