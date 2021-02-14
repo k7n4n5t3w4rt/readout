@@ -106,7 +106,7 @@ function fetchReadout(
   dispatch /*: function */,
 ) {
   //`https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
-  fetch(`http://localhost:5000/dyad-read?sessionId=${sessionId}`, {
+  fetch(`${Config.EASY}/dyad-read?sessionId=${sessionId}`, {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
