@@ -10,6 +10,10 @@ declare module "finalhandler" {
   declare module.exports: any;
 }
 
+declare module "../server/config.js" {
+  declare module.exports: any;
+}
+
 declare module "../web_modules/dotenv.js" {
   declare module.exports: any;
 }

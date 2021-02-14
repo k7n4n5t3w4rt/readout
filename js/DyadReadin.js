@@ -15,7 +15,7 @@ import {
   createStyles,
   setSeed,
 } from "../web_modules/simplestyle-js.js";
-import Config from "./config.js";
+import Config from "../server/config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
 import DyadMoves from "./DyadMoves.js";
