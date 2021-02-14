@@ -8,7 +8,6 @@ import {
 import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
 import FullscreenToggle from "./FullscreenToggle.js";
-import config from "./config.js";
 import Version from "./Version.js";
 import Dot from "./Dot.js";
 import {
@@ -16,14 +15,11 @@ import {
   createStyles,
   setSeed,
 } from "../web_modules/simplestyle-js.js";
+import Config from "../server/config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
 
 const html = htm.bind(h);
-
-// -----------------------------------------------------------------------------
-// Styles
-// -----------------------------------------------------------------------------
 const seed /*: number */ = parseInt(
   "dyadreadout".split("").reduce(
     (acc /*: string */, letter /*: string */) /*: string */ => {
@@ -34,12 +30,11 @@ const seed /*: number */ = parseInt(
   ),
 );
 setSeed(seed);
+
 rawStyles({});
+
 const [styles] = createStyles(DyadCss);
 
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
 /*::
 type Props = {
   pole1: string,
@@ -62,7 +57,7 @@ const DyadReadout = (props /*: Props */) => {
 
       const interval = setInterval(() => {
         fetchReadout(slider, props.sessionId, dispatch);
-      }, 3000);
+      }, 1000);
       return () => clearInterval(interval);
     }
   }, []);
@@ -70,7 +65,7 @@ const DyadReadout = (props /*: Props */) => {
   return html`
     <div className="${styles.container}">
       <${FullscreenToggle} />
-      <${Version} version="${config.VERSION}" />
+      <${Version} version="${Config.VERSION}" />
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
@@ -105,46 +100,40 @@ const DyadReadout = (props /*: Props */) => {
   `;
 };
 
-// -----------------------------------------------------------------------------
-// Functions
-// -----------------------------------------------------------------------------
 function fetchReadout(
   slider /*: HTMLElement */,
   sessionId /*: string */,
   dispatch /*: function */,
 ) {
-  fetch(
-    `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
-    {
-      method: "GET", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow", // manual, *follow, error
-      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+  //`https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
+  fetch(`http://localhost:5000/dyad-read?sessionId=${sessionId}`, {
+    method: "GET", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
     },
-  )
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+  })
     .then((response /*: Object */) /*: Promise<string> */ => {
       //return "{}";
       return response.json();
     })
     .then((data /*: Object */) /*: void */ => {
-      const others /*: Array<number> */ = data[sessionId] || [];
+      const others /*: Object */ = data[sessionId] || {};
 
-      if (others.length > 0) {
-        const positions /*: Array<number> */ = others.map((
-          x /*: number */,
-        ) /*: number */ => {
+      const positions /*: Array<number> */ = [];
+      if (Object.keys(others).length > 0) {
+        for (const [uniqueId, coordinates] /*: [any, any] */ of Object.entries(
+          others,
+        )) {
           // This is where we turn the percentage into an x position
-          const position /*: number */ = Math.round(
-            (x * (slider.offsetWidth - 40)) / 100,
+          positions.push(
+            Math.round((coordinates.x * (slider.offsetWidth - 40)) / 100),
           );
-          //console.log(x, position);
-          return position;
-        });
+        }
         dispatch({ type: "readout", payload: positions });
       }
     })

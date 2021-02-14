@@ -8,7 +8,6 @@ import {
 } from "../web_modules/preact/hooks.js";
 import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
-import config from "./config.js";
 import Version from "./Version.js";
 import FullscreenToggle from "./FullscreenToggle.js";
 import DyadFormInputPole1 from "./DyadFormInputPole1.js";
@@ -18,10 +17,15 @@ import {
   createStyles,
   setSeed,
 } from "../web_modules/simplestyle-js.js";
+import Config from "../server/config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
 
 const html = htm.bind(h);
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
 const seed /*: number */ = parseInt(
   "dyad".split("").reduce(
     (acc /*: string */, letter /*: string */) /*: string */ => {
@@ -32,10 +36,12 @@ const seed /*: number */ = parseInt(
   ),
 );
 setSeed(seed);
-
 rawStyles({});
-
 const [styles] = createStyles(DyadCss);
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 /*::
 type Props = {
@@ -45,15 +51,15 @@ type Props = {
 };
 */
 const Dyad = (props /*: Props */) => {
-  // const [state /*: AppState */, dispatch /*: function */] = useContext(
-  //   AppContext,
-  // );
+  const [state, dispatch] /*: [ AppState, function] */ = useContext(AppContext);
   const [pole1, setPole1] = useState("");
   const [pole2, setPole2] = useState("");
 
+  const sessionId = Date.now().toString();
+
   return html`
     <div className="${styles.container}">
-      <${Version} version="${config.VERSION}" />
+      <${Version} version="${Config.VERSION}" />
       <${FullscreenToggle} />
 
       <div className="${styles.formContainer}">
@@ -62,9 +68,32 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            route(
-              `/readin?pole1=${pole1}&pole2=${pole2}&sessionId=${Date.now().toString()}`,
-            );
+            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
+            const localReadoutLink = `readout?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
+            const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
+            // $FlowFixMe
+            navigator.permissions
+              .query({ name: "clipboard-write" })
+              .then((result) => {
+                if (result.state == "granted" || result.state == "prompt") {
+                  /* write to the clipboard now */
+                  navigator.clipboard.writeText(absoluteReadoutLink).then(
+                    function () {
+                      alert(
+                        `This link to the readout has been saved to your clipboard. Paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                      );
+                      /* clipboard successfully set */
+                    },
+                    function () {
+                      alert(
+                        `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                      );
+                      /* clipboard write failed */
+                    },
+                  );
+                }
+              });
+            route(localReadinLink);
           }}"
         >
           <fieldset>

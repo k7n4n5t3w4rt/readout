@@ -1,9 +1,7 @@
 // @flow
-import conf from "./config.js";
-
 const getItem /*: function */ = (
   itemName /*: string */,
-  rememberMe /*: boolean | typeof undefined */ = conf.REMEMBER_ME,
+  rememberMe /*: boolean | typeof undefined */,
 ) /*: string | null | typeof undefined */ => {
   // Browser only
   if (typeof process === "undefined" || process.release.name !== "node") {
@@ -23,7 +21,7 @@ const getItem /*: function */ = (
 const setItem /*: function */ = (
   itemName /*: string */,
   itemValue /*: Object */,
-  rememberMe /*: boolean | typeof undefined */ = conf.REMEMBER_ME,
+  rememberMe /*: boolean | typeof undefined */,
 ) /*: void */ => {
   // Browser only
   if (typeof process === "undefined" || process.release.name !== "node") {
@@ -41,7 +39,7 @@ const setItem /*: function */ = (
 };
 
 const clear /*: function */ = (
-  rememberMe /*: boolean | typeof undefined */ = conf.REMEMBER_ME,
+  rememberMe /*: boolean | typeof undefined */,
 ) /*: void */ => {
   // Browser only
   if (typeof process === "undefined" || process.release.name !== "node") {

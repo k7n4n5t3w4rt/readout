@@ -1,5 +1,4 @@
 // @flow
-import conf from "./config.js";
 import { h, render, createContext } from "../web_modules/preact.js";
 import { useReducer } from "../web_modules/preact/hooks.js";
 import htm from "../web_modules/htm.js";
@@ -12,9 +11,20 @@ const html = htm.bind(h);
 // A context for the state global management
 const AppContext = createContext([{}, () => {}]);
 
+// -----------------------------------------------------------------------------
+// Reducer
+// -----------------------------------------------------------------------------
 const reducer = (state, action) =>
   // https://www.pika.dev/npm/@vve/immer
   produce(state, (draft) => {
+    if (action.type === "sessionId") {
+      //console.log("reducer() - sessionId:", action.payload);
+      draft.sessionId = action.payload;
+    }
+    if (action.type === "uniqueId") {
+      //console.log("reducer() - uniqueId:", action.payload);
+      draft.uniqueId = action.payload;
+    }
     if (action.type === "coordinates") {
       //console.log("reducer() - coordinates:", action.payload);
       draft.coordinates = action.payload;
@@ -82,7 +92,7 @@ const AppProvider /*: function */ = (props /*: Props */) => {
 
     if (JSON.stringify(state) !== JSON.stringify({})) {
       // Store the state in stateStorage on every render-loop
-      stateStorage.setItem("state", JSON.stringify(state), conf.REMEMBER_ME);
+      stateStorage.setItem("state", JSON.stringify(state), window.REMEMBER_ME);
     }
   }
 

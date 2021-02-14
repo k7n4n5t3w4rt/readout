@@ -1,5 +1,45 @@
 // @flow
 export default {
+  savePosition: (
+    slider /*: HTMLElement */,
+    sessionId /*: string */,
+    uniqueId /*: string */,
+    position /*: Object */,
+  ) /*: void */ => {
+    try {
+      window.navigator.vibrate(200);
+    } catch (error) {}
+
+    const percentage = Math.round(
+      (position.x / (slider.offsetWidth - 40)) * 100,
+    );
+    console.log("Position saving...", percentage);
+    // `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
+    fetch(
+      `http://localhost:5000/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
+      {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      },
+    )
+      .then((response /*: Object */) /*: Promise<string> */ => {
+        //return "{}";
+        console.log("Position saved", percentage);
+        return response.json();
+      })
+      .catch((e /*: Error */) /*: void */ => {
+        alert(e.message);
+        console.error(e);
+      });
+  },
+
   moveDot: (dot /*: HTMLElement */, position /*: Object */) /*: void */ => {
     dot.style.left = position.x + "px";
   },
