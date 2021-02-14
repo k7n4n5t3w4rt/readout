@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="manifest" href="site.webmanifest">
+	<link rel="apple-touch-icon" href="icon.png">
+	<!-- Place favicon.ico in the root directory -->
+
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="/css/materialize.css"  media="screen,projection"/>
+	<!-- Google Icons used for Materialize.css and other places -->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!-- The main body font -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+	<!-- Reset the browser defaults -->
+	<link rel="stylesheet" href="/css/normalize.css">
+	<!-- From HTML5 Boilerplate -->
+	<link rel="stylesheet" href="/css/main.css">
+	<!-- The loading spinners -->
+	<link rel="stylesheet" href="/css/spinkit.css">
+	<!-- Our local CSS -->
+	<link rel="stylesheet" href="/css/layout.css">
+
+	<meta name="theme-color" content="#fafafa">
+
+	<script>
+		// ENV
+		window.EASY = "https://easy--prod-welkmofgdq-uc.a.run.app";
+		window.NODE_ENV = "development";
+		window.REMEMBER_ME = false;
+		window.VERSION = "PROD";
+	</script>
+
+	<script src="/js/vendor/modernizr-3.8.0.min.js"></script>
+	<script src="/js/plugins.js"></script>
+	<script src="/js/main.js" type="module"></script>
+
+	<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+	<script>
+		window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+		ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
+	</script>
+	<script src="https://www.google-analytics.com/analytics.js" async></script>
+</head>
+
+<body>
+	<div id="goodthing" data-goodthing><div class="container_ecfbe">
+	 
+	<div cy-data="version" class="version_wfbibjjpo">
+		<div class="versionNumber_wfbibjjpp">PROD</div>
+	</div> 
+	<div class="fullscreen_gvmmtdbiffbey">
+		<i id="fullscreenExit" cy-data="fullscreen" class="material-icons fullscreenIcon_gvmmtdbiffbey">fullscreen_exit</i>
+	</div>
+	<div class="formContainer_ecfbf">
+		<form action="/readin" method="GET">
+			<fieldset>
+				<div class="row">
+					<div class="input-field">
+						<input type="text" data-cy="pole1" name="pole1" size="40" pattern="[A-Za-z0-9 ]+" title="Letters, numbers and spaces only." required />
+						<label class="no-pointer-event" for="pole1">
+							Pole One
+							<abbr title="required" aria-label="required">*</abbr>
+						</label>
+						<div class="helper-text" data-cy="key-helper-text">
+							This is the label for the left side of the slider.
+						</div>
+					</div>
+				</div>
+				<div class="row undefined">
+					<div class="input-field">
+						<input type="text" data-cy="pole2" name="pole2" size="40" pattern="[A-Za-z0-9 ]+" title="Letters, numbers and spaces only." required />
+						<label class="no-pointer-event" for="pole2">
+							Pole Two
+							<abbr title="required" aria-label="required">*</abbr>
+						</label>
+						<div class="helper-text" data-cy="key-helper-text">
+							This is the label for the right side of the slider.
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<button data-cy="go" class="btn-small blue" type="submit">
+						Go
+						<i class="material-icons right">login</i>
+					</button>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div></div data-goodthing>
+	<!-- <script type="text/javascript" src="/js/vendor/materialize.js"></script> -->
+</body>
+
+</html>

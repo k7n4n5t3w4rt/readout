@@ -3,10 +3,14 @@ type AppState = {
     x: number,
   },
   fullscreenToggle: boolean,
-  readout: Array<number>,
+  readout: Array<Object>,
 };
 
 declare module "finalhandler" {
+  declare module.exports: any;
+}
+
+declare module "../web_modules/dotenv.js" {
   declare module.exports: any;
 }
 

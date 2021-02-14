@@ -106,6 +106,8 @@ const renderToString = (
   }
 
   // Do the ENVs
+  const re_env_EASY = new RegExp("_EASY_", "g");
+  renderedContent = renderedContent.replace(re_env_EASY, conf.EASY);
   const re_env_NODE_ENV = new RegExp("_NODE_ENV_", "g");
   renderedContent = renderedContent.replace(re_env_NODE_ENV, conf.NODE_ENV);
   const re_env_REMEMBER_ME = new RegExp("_REMEMBER_ME_", "g");
