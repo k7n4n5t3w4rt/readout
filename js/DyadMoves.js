@@ -1,4 +1,5 @@
 // @flow
+import Config from "./config.js";
 export default {
   savePosition: (
     slider /*: HTMLElement */,
@@ -16,7 +17,7 @@ export default {
     console.log("Position saving...", percentage);
     // `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
     fetch(
-      `http://localhost:5000/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
+      `${Config.EASY}/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
       {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
