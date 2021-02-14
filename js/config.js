@@ -12,7 +12,7 @@ if (typeof process === "undefined" || process.release.name !== "node") {
   VERSION = window.VERSION;
 } else {
   // Here we're assuming that all process.env variables are strings
-  EASY = process.env.EASY || "localhost:5000";
+  EASY = process.env.EASY || "http://localhost:5000";
   NODE_ENV = process.env.NODE_ENV || "development";
   PORT = parseInt(process.env.PORT) || 4000;
   REMEMBER_ME = false;
