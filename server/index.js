@@ -1,5 +1,5 @@
 // @flow
-import conf from "./config.js";
+import conf from "../js/config.js";
 import http from "http";
 import fs from "fs";
 import finalHandler from "finalhandler";
