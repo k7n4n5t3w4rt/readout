@@ -47,7 +47,6 @@ const [styles] = createStyles(DyadCss);
 type Props = {
   pole1: string,
   pole2: string,
-  sessionId: string
 };
 */
 const Dyad = (props /*: Props */) => {
