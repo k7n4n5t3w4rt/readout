@@ -33,14 +33,17 @@ const reducer = (state, action) =>
       //console.log("reducer() - fullscreenToggle:", action.payload);
       draft.fullscreenToggle = action.payload;
     }
-    if (action.type === "reset") {
-      //console.log("reducer() - reset:", action.payload);
-      draft.coordinates = action.payload.coordinates;
-      draft.fullscreenToggle = action.payload.fullscreenToggle;
-    }
     if (action.type === "readout") {
       //console.log("reducer() - others:", action.payload);
       draft.readout = action.payload;
+    }
+    if (action.type === "reset") {
+      //console.log("reducer() - reset:", action.payload);
+      draft.sessionId = action.payload.sessionId;
+      draft.uniqueId = action.payload.uniqueId;
+      draft.coordinates = action.payload.coordinates;
+      draft.fullscreenToggle = action.payload.fullscreenToggle;
+      draft.readout = action.payload.readout;
     }
   });
 
