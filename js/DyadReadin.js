@@ -72,7 +72,9 @@ const DyadReadin = (props /*: Props */) => {
     if (dot !== null && slider !== null && body !== null) {
       console.log("Adding EventListeners (happens on load)");
       dispatch({ type: "sessionId", payload: props.sessionId });
-      dispatch({ type: "uniqueId", payload: uniqueId });
+      if (state.uniqueId === undefined) {
+        dispatch({ type: "uniqueId", payload: uniqueId });
+      }
       // Set some properties - x:0 is just a placeholder
       const position /*: Object */ = {
         x: 0,
@@ -114,7 +116,17 @@ const DyadReadin = (props /*: Props */) => {
           (e /*: MouseEvent */) /*: void */ => {
             console.log("mouseup");
             DyadMoves.stopMove(slider, position, isMoving, dispatch);
-            DyadMoves.savePosition(slider, props.sessionId, uniqueId, position);
+            let useThisUniqueId = uniqueId;
+            if (state.uniqueId === undefined) {
+              useThisUniqueId = state.uniqueId;
+            }
+            DyadMoves.savePosition(
+              slider,
+              props.sessionId,
+              useThisUniqueId,
+              position,
+            );
+
             //console.log(isMoving.status);
           },
           { once: false },
@@ -153,7 +165,16 @@ const DyadReadin = (props /*: Props */) => {
         (e /*: TouchEvent */) /*: void */ => {
           //console.log("touchend");
           DyadMoves.stopMove(slider, position, isMoving, dispatch);
-          DyadMoves.savePosition(slider, props.sessionId, uniqueId, position);
+          let useThisUniqueId = uniqueId;
+          if (state.uniqueId === undefined) {
+            useThisUniqueId = state.uniqueId;
+          }
+          DyadMoves.savePosition(
+            slider,
+            props.sessionId,
+            useThisUniqueId,
+            position,
+          );
         },
         { once: false },
       );

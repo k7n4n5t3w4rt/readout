@@ -15,7 +15,7 @@ if (typeof process === "undefined" || process.release.name !== "node") {
   EASY = process.env.EASY || "http://localhost:5000";
   NODE_ENV = process.env.NODE_ENV || "development";
   PORT = parseInt(process.env.PORT) || 4000;
-  REMEMBER_ME = false;
+  REMEMBER_ME = true;
   VERSION = process.env.VERSION || "DEV";
 }
 export default { EASY, NODE_ENV, PORT, VERSION, REMEMBER_ME };
