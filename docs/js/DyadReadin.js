@@ -117,7 +117,7 @@ const DyadReadin = (props /*: Props */) => {
             console.log("mouseup");
             DyadMoves.stopMove(slider, position, isMoving, dispatch);
             let useThisUniqueId = uniqueId;
-            if (state.uniqueId === undefined) {
+            if (state.uniqueId !== undefined) {
               useThisUniqueId = state.uniqueId;
             }
             DyadMoves.savePosition(
@@ -166,7 +166,7 @@ const DyadReadin = (props /*: Props */) => {
           //console.log("touchend");
           DyadMoves.stopMove(slider, position, isMoving, dispatch);
           let useThisUniqueId = uniqueId;
-          if (state.uniqueId === undefined) {
+          if (state.uniqueId !== undefined) {
             useThisUniqueId = state.uniqueId;
           }
           DyadMoves.savePosition(
@@ -207,7 +207,7 @@ const DyadReadin = (props /*: Props */) => {
 
   return html`
     <div className="${styles.container}">
-      <${Version} version="${Config.VERSION}" />
+      <${Version} version="${Config.VERSION}(${state.uniqueId})" />
       <${FullscreenToggle} />
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
