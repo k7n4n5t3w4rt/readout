@@ -153,12 +153,7 @@ const DyadReadin = (props /*: Props */) => {
         (e /*: TouchEvent */) /*: void */ => {
           //console.log("touchend");
           DyadMoves.stopMove(slider, position, isMoving, dispatch);
-          DyadMoves.savePosition(
-            slider,
-            state.sessionId,
-            state.uniqueId,
-            position,
-          );
+          DyadMoves.savePosition(slider, props.sessionId, uniqueId, position);
         },
         { once: false },
       );
