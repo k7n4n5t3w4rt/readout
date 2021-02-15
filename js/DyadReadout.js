@@ -80,8 +80,12 @@ const DyadReadout = (props /*: Props */) => {
           <div className="${styles.sliderContainer}">
             <div id="slider" className="${styles.slider}">
               ${state.readout &&
-              html`${state.readout.map((x /*: number */) => {
-                return html`<${Dot} x="${x}" />`;
+              html`${state.readout.map((
+                x /*: number */,
+                iterator /*: number */,
+              ) => {
+                const y = (iterator * 6).toString();
+                return html`<${Dot} x="${x}" y=${y} />`;
               })}`}
             </div>
           </div>
