@@ -6,11 +6,11 @@ export default {
     sessionId /*: string */,
     uniqueId /*: string */,
     position /*: Object */,
+    dispatch /*: function */,
   ) /*: void */ => {
     try {
       window.navigator.vibrate(200);
     } catch (error) {}
-
     const percentage = Math.round(
       (position.x / (slider.offsetWidth - 40)) * 100,
     );

@@ -56,10 +56,7 @@ const DyadReadin = (props /*: Props */) => {
     AppContext,
   );
 
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-  const uniqueId = getRandomInt(Date.now()).toString();
+  dispatch({ type: "sessionId", payload: props.sessionId });
 
   // Happens once, on load
   useEffect(() => {
@@ -70,116 +67,113 @@ const DyadReadin = (props /*: Props */) => {
       document.getElementById("slider") || null;
     const body /*: HTMLElement  | null */ = document.body || null;
     if (dot !== null && slider !== null && body !== null) {
-      console.log("Adding EventListeners (happens on load)");
-      dispatch({ type: "sessionId", payload: props.sessionId });
-      if (state.uniqueId === undefined) {
-        dispatch({ type: "uniqueId", payload: uniqueId });
-      }
-      // Set some properties - x:0 is just a placeholder
-      const position /*: Object */ = {
-        x: 0,
-      };
-      const isMoving /*: Object */ = { status: false };
+      if (state.sessionId !== undefined && state.uniqueId !== undefined) {
+        console.log("Adding EventListeners (happens on load)");
+        // Set some properties - x:0 is just a placeholder
+        const position /*: Object */ = {
+          x: 0,
+        };
+        const isMoving /*: Object */ = { status: false };
 
-      // Add the event listeners for mousedown, mousemove, and mouseup
-      dot.addEventListener(
-        "mousedown",
-        (e /*: MouseEvent */) /*: void */ => {
-          //console.log("mousedown");
-          DyadMoves.startMove(isMoving);
-          //console.log(isMoving.status);
-        },
-        { once: false },
-      );
+        // Add the event listeners for mousedown, mousemove, and mouseup
+        dot.addEventListener(
+          "mousedown",
+          (e /*: MouseEvent */) /*: void */ => {
+            //console.log("mousedown");
+            DyadMoves.startMove(isMoving);
+            //console.log(isMoving.status);
+          },
+          { once: false },
+        );
 
-      slider.addEventListener(
-        "mousemove",
-        (e /*: MouseEvent */) /*: void */ => {
-          if (isMoving.status === true) {
-            //console.log("mousemove");
-          }
-          DyadMoves.movingMouse(
-            slider,
-            dot,
-            e,
-            position,
-            isMoving,
-            DyadMoves.moveDot,
-          );
-        },
-        { once: false },
-      );
-      if (state.sessionId === undefined) {
-        console.log("Happens once each session");
+        slider.addEventListener(
+          "mousemove",
+          (e /*: MouseEvent */) /*: void */ => {
+            if (isMoving.status === true) {
+              //console.log("mousemove");
+            }
+            DyadMoves.movingMouse(
+              slider,
+              dot,
+              e,
+              position,
+              isMoving,
+              DyadMoves.moveDot,
+            );
+          },
+          { once: false },
+        );
         body.addEventListener(
           "mouseup",
           (e /*: MouseEvent */) /*: void */ => {
             console.log("mouseup");
             DyadMoves.stopMove(slider, position, isMoving, dispatch);
-            let useThisUniqueId = uniqueId;
-            if (state.uniqueId !== undefined) {
-              useThisUniqueId = state.uniqueId;
-            }
             DyadMoves.savePosition(
               slider,
-              props.sessionId,
-              useThisUniqueId,
+              state.sessionId,
+              state.uniqueId,
               position,
+              dispatch,
             );
 
             //console.log(isMoving.status);
           },
           { once: false },
         );
+
+        // Add the event listeners for touchstart, touchmove, and touchend
+        dot.addEventListener(
+          "touchstart",
+          (e /*: TouchEvent */) /*: void */ => {
+            //console.log("touchstart");
+            DyadMoves.startMove(isMoving);
+            //console.log(isMoving.status);
+          },
+          { once: false },
+        );
+
+        slider.addEventListener(
+          "touchmove",
+          (e /*: TouchEvent */) /*: void */ => {
+            //console.log("touchmove");
+            DyadMoves.movingTouch(
+              slider,
+              dot,
+              e,
+              position,
+              isMoving,
+              DyadMoves.moveDot,
+            );
+          },
+          { once: false },
+        );
+
+        body.addEventListener(
+          "touchend",
+          (e /*: TouchEvent */) /*: void */ => {
+            //console.log("touchend");
+            DyadMoves.stopMove(slider, position, isMoving, dispatch);
+            DyadMoves.savePosition(
+              slider,
+              state.sessionId,
+              state.uniqueId,
+              position,
+              dispatch,
+            );
+          },
+          { once: false },
+        );
+      } else if (state.sessionId !== undefined) {
+        dispatch({
+          type: "uniqueId",
+          payload: ((max /*: number */) /*: string */ => {
+            const uniqueId = Math.floor(Math.random() * Math.floor(max));
+            return uniqueId.toString();
+          })(Date.now()),
+        });
       }
-
-      // Add the event listeners for touchstart, touchmove, and touchend
-      dot.addEventListener(
-        "touchstart",
-        (e /*: TouchEvent */) /*: void */ => {
-          //console.log("touchstart");
-          DyadMoves.startMove(isMoving);
-          //console.log(isMoving.status);
-        },
-        { once: false },
-      );
-
-      slider.addEventListener(
-        "touchmove",
-        (e /*: TouchEvent */) /*: void */ => {
-          //console.log("touchmove");
-          DyadMoves.movingTouch(
-            slider,
-            dot,
-            e,
-            position,
-            isMoving,
-            DyadMoves.moveDot,
-          );
-        },
-        { once: false },
-      );
-
-      body.addEventListener(
-        "touchend",
-        (e /*: TouchEvent */) /*: void */ => {
-          //console.log("touchend");
-          DyadMoves.stopMove(slider, position, isMoving, dispatch);
-          let useThisUniqueId = uniqueId;
-          if (state.uniqueId !== undefined) {
-            useThisUniqueId = state.uniqueId;
-          }
-          DyadMoves.savePosition(
-            slider,
-            props.sessionId,
-            useThisUniqueId,
-            position,
-          );
-        },
-        { once: false },
-      );
     }
-  }, []);
+  }, [state.sessionId, state.uniqueId]);
 
   // Happens when the dot is on the move
   useEffect(() => {
