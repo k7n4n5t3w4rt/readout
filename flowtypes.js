@@ -4,6 +4,8 @@ type AppState = {
   },
   fullscreenToggle: boolean,
   readout: Array<Object>,
+  sessionId: string,
+  uniqueId: string,
 };
 
 declare module "finalhandler" {
