@@ -129,17 +129,17 @@ function fetchReadout(
       const others /*: Object */ = data[sessionId] || {};
 
       const positions /*: Array<number> */ = [];
-      if (Object.keys(others).length > 0) {
-        for (const [uniqueId, coordinates] /*: [any, any] */ of Object.entries(
-          others,
-        )) {
-          // This is where we turn the percentage into an x position
-          positions.push(
-            Math.round((coordinates.x * (slider.offsetWidth - 40)) / 100),
-          );
-        }
-        dispatch({ type: "readout", payload: positions });
+      //if (Object.keys(others).length > 0) {
+      for (const [uniqueId, coordinates] /*: [any, any] */ of Object.entries(
+        others,
+      )) {
+        // This is where we turn the percentage into an x position
+        positions.push(
+          Math.round((coordinates.x * (slider.offsetWidth - 40)) / 100),
+        );
       }
+      dispatch({ type: "readout", payload: positions });
+      //}
     })
     .catch((e /*: Error */) /*: void */ => {
       console.error(e);
