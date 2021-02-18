@@ -201,7 +201,7 @@ const DyadReadin = (props /*: Props */) => {
 
   return html`
     <div className="${styles.container}">
-      <${Version} version="${Config.VERSION}(${state.uniqueId})" />
+      <${Version} version="${Config.VERSION}" />
       <${FullscreenToggle} />
       <div className="${styles.dyadContainer}">
         <div id="dyad" className="${styles.dyad}">
