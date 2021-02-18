@@ -47,7 +47,6 @@ const [styles] = createStyles(DyadCss);
 type Props = {
   pole1: string,
   pole2: string,
-  sessionId: string
 };
 */
 const Dyad = (props /*: Props */) => {
@@ -55,7 +54,11 @@ const Dyad = (props /*: Props */) => {
   const [pole1, setPole1] = useState("");
   const [pole2, setPole2] = useState("");
 
-  const sessionId = Date.now().toString();
+  const sessionId =
+    // Happens when the dot is on the move
+    useEffect(() => {
+      dispatch({ type: "sessionId", payload: Date.now().toString() });
+    }, []);
 
   return html`
     <div className="${styles.container}">
@@ -68,31 +71,39 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
-            const localReadoutLink = `readout?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
+            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${state.sessionId}`;
+            const localReadoutLink = `readout?pole1=${pole1}&pole2=${pole2}&sessionId=${state.sessionId}`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
-            // $FlowFixMe
-            navigator.permissions
-              .query({ name: "clipboard-write" })
-              .then((result) => {
-                if (result.state == "granted" || result.state == "prompt") {
-                  /* write to the clipboard now */
-                  navigator.clipboard.writeText(absoluteReadoutLink).then(
-                    function () {
-                      alert(
-                        `This link to the readout has been saved to your clipboard. Paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
-                      );
-                      /* clipboard successfully set */
-                    },
-                    function () {
-                      alert(
-                        `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
-                      );
-                      /* clipboard write failed */
-                    },
-                  );
-                }
-              });
+            if (
+              navigator !== undefined &&
+              navigator.permissions !== undefined
+            ) {
+              navigator.permissions
+                .query({ name: "clipboard-write" })
+                .then((result) => {
+                  if (result.state == "granted" || result.state == "prompt") {
+                    /* write to the clipboard now */
+                    navigator.clipboard.writeText(absoluteReadoutLink).then(
+                      function () {
+                        alert(
+                          `This link to the readout has been saved to your clipboard. Paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                        );
+                        /* clipboard successfully set */
+                      },
+                      function () {
+                        alert(
+                          `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                        );
+                        /* clipboard write failed */
+                      },
+                    );
+                  }
+                });
+            } else {
+              alert(
+                `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+              );
+            }
             route(localReadinLink);
           }}"
         >

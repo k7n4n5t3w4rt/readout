@@ -35,7 +35,8 @@ const [styles] = createStyles(DyadCss);
 
 /*::
 type Props = {
-  x: number
+  x: number,
+  y: number
 };
 */
 const Dot = (props /*: Props */) => {
@@ -48,7 +49,7 @@ const Dot = (props /*: Props */) => {
   return html`
     <div
       className="${styles.dot} ${styles.circle}"
-      style="left: ${props.x}px"
+      style="left: ${props.x}px; margin-top: ${props.y}px"
     ></div>
   `;
 };

@@ -80,8 +80,12 @@ const DyadReadout = (props /*: Props */) => {
           <div className="${styles.sliderContainer}">
             <div id="slider" className="${styles.slider}">
               ${state.readout &&
-              html`${state.readout.map((x /*: number */) => {
-                return html`<${Dot} x="${x}" />`;
+              html`${state.readout.map((
+                x /*: number */,
+                iterator /*: number */,
+              ) => {
+                const y = (iterator * 6).toString();
+                return html`<${Dot} x="${x}" y=${y} />`;
               })}`}
             </div>
           </div>
@@ -106,7 +110,7 @@ function fetchReadout(
   dispatch /*: function */,
 ) {
   //`https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
-  fetch(`http://localhost:5000/dyad-read?sessionId=${sessionId}`, {
+  fetch(`${Config.EASY}/dyad-read?sessionId=${sessionId}`, {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -125,17 +129,17 @@ function fetchReadout(
       const others /*: Object */ = data[sessionId] || {};
 
       const positions /*: Array<number> */ = [];
-      if (Object.keys(others).length > 0) {
-        for (const [uniqueId, coordinates] /*: [any, any] */ of Object.entries(
-          others,
-        )) {
-          // This is where we turn the percentage into an x position
-          positions.push(
-            Math.round((coordinates.x * (slider.offsetWidth - 40)) / 100),
-          );
-        }
-        dispatch({ type: "readout", payload: positions });
+      //if (Object.keys(others).length > 0) {
+      for (const [uniqueId, coordinates] /*: [any, any] */ of Object.entries(
+        others,
+      )) {
+        // This is where we turn the percentage into an x position
+        positions.push(
+          Math.round((coordinates.x * (slider.offsetWidth - 40)) / 100),
+        );
       }
+      dispatch({ type: "readout", payload: positions });
+      //}
     })
     .catch((e /*: Error */) /*: void */ => {
       console.error(e);
