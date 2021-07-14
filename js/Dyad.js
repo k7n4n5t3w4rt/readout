@@ -10,6 +10,7 @@ import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
 import Version from "./Version.js";
 import FullscreenToggle from "./FullscreenToggle.js";
+import DyadFormInputQuestion from "./DyadFormInputQuestion.js";
 import DyadFormInputPole1 from "./DyadFormInputPole1.js";
 import DyadFormInputPole2 from "./DyadFormInputPole2.js";
 import {
@@ -53,6 +54,7 @@ const Dyad = (props /*: Props */) => {
   const [state, dispatch] /*: [ AppState, function] */ = useContext(AppContext);
   const [pole1, setPole1] = useState("");
   const [pole2, setPole2] = useState("");
+  const [question, setQuestion] = useState("");
 
   const sessionId =
     // Happens when the dot is on the move
@@ -71,8 +73,16 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${state.sessionId}`;
-            const localReadoutLink = `readout?pole1=${pole1}&pole2=${pole2}&sessionId=${state.sessionId}`;
+            const localReadinLink = `readin?question=${btoa(
+              question,
+            )}&pole1=${btoa(pole1)}&pole2=${btoa(pole2)}&sessionId=${
+              state.sessionId
+            }`;
+            const localReadoutLink = `readout?question=${btoa(
+              question,
+            )}&pole1=${btoa(pole1)}&pole2=${btoa(pole2)}&sessionId=${
+              state.sessionId
+            }`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
             if (
               navigator !== undefined &&
@@ -108,6 +118,9 @@ const Dyad = (props /*: Props */) => {
           }}"
         >
           <fieldset>
+            <div class="row">
+              <${DyadFormInputQuestion} setQuestionState="${setQuestion}" />
+            </div>
             <div class="row">
               <${DyadFormInputPole1} setPole1State="${setPole1}" />
             </div>

@@ -25,9 +25,9 @@ const App /*: function */ = (props /*: Props */) => {
       window.location.search,
     );
     // $FlowFixMe
-    pole1 = searchParams.get("pole1") || "Left";
+    pole1 = searchParams.get("pole1") || btoa("Left");
     // $FlowFixMe
-    pole2 = searchParams.get("pole2") || "Right";
+    pole2 = searchParams.get("pole2") || btoa("Right");
     // $FlowFixMe
     sessionId = searchParams.get("sessionId") || "example";
   }

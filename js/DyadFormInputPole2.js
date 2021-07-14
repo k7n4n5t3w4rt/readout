@@ -23,8 +23,8 @@ const DyadFormInputPole2 = (props /*: Props */) => {
         onInput="${onInputKey}"
         type="text"
         size="40"
-        pattern="[A-Za-z0-9 ]+"
-        title="Letters, numbers and spaces only."
+        pattern=".+"
+        title="Pretty much anything will work...  but not that."
         required
       />
       <label class="no-pointer-event" for="pole2"

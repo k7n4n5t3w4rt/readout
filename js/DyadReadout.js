@@ -37,8 +37,9 @@ const [styles] = createStyles(DyadCss);
 
 /*::
 type Props = {
-  pole1: string,
-  pole2: string,
+  question?: string,
+  pole1?: string,
+  pole2?: string,
   sessionId: string,
 };
 */
@@ -67,6 +68,11 @@ const DyadReadout = (props /*: Props */) => {
       <${FullscreenToggle} />
       <${Version} version="${Config.VERSION}" />
       <div className="${styles.dyadContainer}">
+        <div className="${styles.questionContainer}">
+          <p className="${styles.question}" data-cy="question">
+            ${atob(props.question || "")}
+          </p>
+        </div>
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
             <div
@@ -74,7 +80,7 @@ const DyadReadout = (props /*: Props */) => {
               data-cy="pole1"
               className="${styles.pole} ${styles.pole1}"
             >
-              ${props.pole1}
+              ${atob(props.pole1 || "")}
             </div>
           </div>
           <div className="${styles.sliderContainer}">
@@ -95,7 +101,7 @@ const DyadReadout = (props /*: Props */) => {
               data-cy="pole2"
               className="${styles.pole} ${styles.pole2}"
             >
-              ${props.pole2}
+              ${atob(props.pole2 || "")}
             </div>
           </div>
         </div>

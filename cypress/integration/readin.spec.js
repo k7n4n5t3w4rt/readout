@@ -9,7 +9,7 @@ context("Actions", () => {
 
   // https://on.cypress.io/interacting-with-elements
 
-  it("Route /readin | Has pole1 and pole2 from the query string", () => {
+  it("Route /readout | Has pole1 and pole2 from the query string", () => {
     cy.server({
       delay: 1000,
       status: 200,
@@ -27,14 +27,15 @@ context("Actions", () => {
         },
       });
       cy.visit(
-        "http://localhost:4000/readin?pole1=Pole%20One&pole2=Pole%20Two&sessionId=1610882364201",
+        "http://localhost:4000/readout?question=VG8gYmUgb3Igbm90IHRvIGJlPw==&pole1=UG9sZSBPbmU=&pole2=UG9sZSBUd28=&sessionId=1626233154638",
       );
+      cy.get("p[data-cy=question]").should("contain", "To be or not to be?");
       cy.get("div[data-cy=pole1]").should("contain", "Pole One");
       cy.get("div[data-cy=pole2]").should("contain", "Pole Two");
     });
   });
 
-  it("Route /readin | Has default values when pole1 and pole2 are not in the query string", () => {
+  it.only("Route /readin | Has default values when pole1 and pole2 are not in the query string", () => {
     cy.server({
       delay: 1000,
       status: 200,
@@ -52,14 +53,17 @@ context("Actions", () => {
         },
       });
       cy.visit("http://localhost:4000/readin");
+      cy.get("p[data-cy=question]").should("contain", "");
       cy.get("div[data-cy=pole1]").should("contain", "Left");
       cy.get("div[data-cy=pole2]").should("contain", "Right");
-      cy.visit("http://localhost:4000/readin?pole1=PoleOne");
-      cy.get("div[data-cy=pole1]").should("contain", "PoleOne");
+      cy.visit("http://localhost:4000/readin?pole1=UG9sZSBPbmU=");
+      cy.get("p[data-cy=question]").should("contain", "");
+      cy.get("div[data-cy=pole1]").should("contain", "Pole One");
       cy.get("div[data-cy=pole2]").should("contain", "Right");
-      cy.visit("http://localhost:4000/readin?pole2=PoleTwo");
+      cy.visit("http://localhost:4000/readin?pole2=UG9sZSBUd28=");
+      cy.get("p[data-cy=question]").should("contain", "");
       cy.get("div[data-cy=pole1]").should("contain", "Left");
-      cy.get("div[data-cy=pole2]").should("contain", "PoleTwo");
+      cy.get("div[data-cy=pole2]").should("contain", "Pole Two");
     });
   });
 
