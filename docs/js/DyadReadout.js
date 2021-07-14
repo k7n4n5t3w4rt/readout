@@ -163,7 +163,7 @@ const fetchReadout = (
 const clearReadout = (
   sessionId /*: string */,
   dispatch /*: function */,
-) /*: () => string | void */ => () /*: string | void */ => {
+) /*: () => void */ => () /*: void */ => {
   //`https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
   fetch(`${Config.EASY}/dyad-clear?sessionId=${sessionId}`, {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -176,9 +176,8 @@ const clearReadout = (
     redirect: "follow", // manual, *follow, error
     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
   })
-    .then((response /*: Object */) /*: Promise<string> */ => {
+    .then((response /*: Object */) /*:  void */ => {
       dispatch({ type: "readout", payload: [] });
-      return response.json();
     })
     .catch((e /*: Error */) /*: void */ => {
       console.error(e);
