@@ -16,6 +16,10 @@ declare module "../server/config.js" {
   declare module.exports: any;
 }
 
+declare module "../web_modules/base64url.js" {
+  declare module.exports: any;
+}
+
 declare module "../web_modules/dotenv.js" {
   declare module.exports: any;
 }

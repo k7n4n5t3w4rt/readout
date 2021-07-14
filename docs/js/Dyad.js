@@ -10,6 +10,7 @@ import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
 import Version from "./Version.js";
 import FullscreenToggle from "./FullscreenToggle.js";
+import DyadFormInputQuestion from "./DyadFormInputQuestion.js";
 import DyadFormInputPole1 from "./DyadFormInputPole1.js";
 import DyadFormInputPole2 from "./DyadFormInputPole2.js";
 import {
@@ -20,6 +21,7 @@ import {
 import Config from "./config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
+import base64 from "./base64.js";
 
 const html = htm.bind(h);
 
@@ -47,15 +49,19 @@ const [styles] = createStyles(DyadCss);
 type Props = {
   pole1: string,
   pole2: string,
-  sessionId: string
 };
 */
 const Dyad = (props /*: Props */) => {
   const [state, dispatch] /*: [ AppState, function] */ = useContext(AppContext);
   const [pole1, setPole1] = useState("");
   const [pole2, setPole2] = useState("");
+  const [question, setQuestion] = useState("");
 
-  const sessionId = Date.now().toString();
+  const sessionId =
+    // Happens when the dot is on the move
+    useEffect(() => {
+      dispatch({ type: "sessionId", payload: Date.now().toString() });
+    }, []);
 
   return html`
     <div className="${styles.container}">
@@ -68,35 +74,54 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
-            const localReadoutLink = `readout?pole1=${pole1}&pole2=${pole2}&sessionId=${sessionId}`;
+            const localReadinLink = `readin?question=${base64.encode(
+              question,
+            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
+              pole2,
+            )}&sessionId=${state.sessionId}`;
+            const localReadoutLink = `readout?question=${base64.encode(
+              question,
+            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
+              pole2,
+            )}&sessionId=${state.sessionId}`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
-            // $FlowFixMe
-            navigator.permissions
-              .query({ name: "clipboard-write" })
-              .then((result) => {
-                if (result.state == "granted" || result.state == "prompt") {
-                  /* write to the clipboard now */
-                  navigator.clipboard.writeText(absoluteReadoutLink).then(
-                    function () {
-                      alert(
-                        `This link to the readout has been saved to your clipboard. Paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
-                      );
-                      /* clipboard successfully set */
-                    },
-                    function () {
-                      alert(
-                        `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
-                      );
-                      /* clipboard write failed */
-                    },
-                  );
-                }
-              });
+            if (
+              navigator !== undefined &&
+              navigator.permissions !== undefined
+            ) {
+              navigator.permissions
+                .query({ name: "clipboard-write" })
+                .then((result) => {
+                  if (result.state == "granted" || result.state == "prompt") {
+                    /* write to the clipboard now */
+                    navigator.clipboard.writeText(absoluteReadoutLink).then(
+                      function () {
+                        alert(
+                          `This link to the readout has been saved to your clipboard. Paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                        );
+                        /* clipboard successfully set */
+                      },
+                      function () {
+                        alert(
+                          `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                        );
+                        /* clipboard write failed */
+                      },
+                    );
+                  }
+                });
+            } else {
+              alert(
+                `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+              );
+            }
             route(localReadinLink);
           }}"
         >
           <fieldset>
+            <div class="row">
+              <${DyadFormInputQuestion} setQuestionState="${setQuestion}" />
+            </div>
             <div class="row">
               <${DyadFormInputPole1} setPole1State="${setPole1}" />
             </div>

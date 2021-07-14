@@ -7,6 +7,7 @@
     "url": "https://github.com/k7n4n5t3w4rt/goodthing/issues"
   },
   "dependencies": {
+    "base64url": "^3.0.1",
     "finalhandler": "^1.1.2",
     "history": "^4.10.1",
     "htm": "^3.0.4",

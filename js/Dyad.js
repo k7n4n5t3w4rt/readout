@@ -21,6 +21,7 @@ import {
 import Config from "./config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
+import base64 from "./base64.js";
 
 const html = htm.bind(h);
 
@@ -73,16 +74,16 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            const localReadinLink = `readin?question=${btoa(
+            const localReadinLink = `readin?question=${base64.encode(
               question,
-            )}&pole1=${btoa(pole1)}&pole2=${btoa(pole2)}&sessionId=${
-              state.sessionId
-            }`;
-            const localReadoutLink = `readout?question=${btoa(
+            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
+              pole2,
+            )}&sessionId=${state.sessionId}`;
+            const localReadoutLink = `readout?question=${base64.encode(
               question,
-            )}&pole1=${btoa(pole1)}&pole2=${btoa(pole2)}&sessionId=${
-              state.sessionId
-            }`;
+            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
+              pole2,
+            )}&sessionId=${state.sessionId}`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
             if (
               navigator !== undefined &&

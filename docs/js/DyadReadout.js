@@ -18,6 +18,7 @@ import {
 import Config from "./config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
+import base64 from "./base64.js";
 
 const html = htm.bind(h);
 const seed /*: number */ = parseInt(
@@ -37,8 +38,9 @@ const [styles] = createStyles(DyadCss);
 
 /*::
 type Props = {
-  pole1: string,
-  pole2: string,
+  question?: string,
+  pole1?: string,
+  pole2?: string,
   sessionId: string,
 };
 */
@@ -67,6 +69,11 @@ const DyadReadout = (props /*: Props */) => {
       <${FullscreenToggle} />
       <${Version} version="${Config.VERSION}" />
       <div className="${styles.dyadContainer}">
+        <div className="${styles.questionContainer}">
+          <p className="${styles.question}" data-cy="question">
+            ${base64.decode(props.question || "")}
+          </p>
+        </div>
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
             <div
@@ -74,14 +81,18 @@ const DyadReadout = (props /*: Props */) => {
               data-cy="pole1"
               className="${styles.pole} ${styles.pole1}"
             >
-              ${props.pole1}
+              ${base64.decode(props.pole1 || "")}
             </div>
           </div>
           <div className="${styles.sliderContainer}">
             <div id="slider" className="${styles.slider}">
               ${state.readout &&
-              html`${state.readout.map((x /*: number */) => {
-                return html`<${Dot} x="${x}" />`;
+              html`${state.readout.map((
+                x /*: number */,
+                iterator /*: number */,
+              ) => {
+                const y = (iterator * 6).toString();
+                return html`<${Dot} x="${x}" y=${y} />`;
               })}`}
             </div>
           </div>
@@ -91,7 +102,7 @@ const DyadReadout = (props /*: Props */) => {
               data-cy="pole2"
               className="${styles.pole} ${styles.pole2}"
             >
-              ${props.pole2}
+              ${base64.decode(props.pole2 || "")}
             </div>
           </div>
         </div>
@@ -106,7 +117,7 @@ function fetchReadout(
   dispatch /*: function */,
 ) {
   //`https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
-  fetch(`http://localhost:5000/dyad-read?sessionId=${sessionId}`, {
+  fetch(`${Config.EASY}/dyad-read?sessionId=${sessionId}`, {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -125,17 +136,17 @@ function fetchReadout(
       const others /*: Object */ = data[sessionId] || {};
 
       const positions /*: Array<number> */ = [];
-      if (Object.keys(others).length > 0) {
-        for (const [uniqueId, coordinates] /*: [any, any] */ of Object.entries(
-          others,
-        )) {
-          // This is where we turn the percentage into an x position
-          positions.push(
-            Math.round((coordinates.x * (slider.offsetWidth - 40)) / 100),
-          );
-        }
-        dispatch({ type: "readout", payload: positions });
+      //if (Object.keys(others).length > 0) {
+      for (const [uniqueId, coordinates] /*: [any, any] */ of Object.entries(
+        others,
+      )) {
+        // This is where we turn the percentage into an x position
+        positions.push(
+          Math.round((coordinates.x * (slider.offsetWidth - 40)) / 100),
+        );
       }
+      dispatch({ type: "readout", payload: positions });
+      //}
     })
     .catch((e /*: Error */) /*: void */ => {
       console.error(e);

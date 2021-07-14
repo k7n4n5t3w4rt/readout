@@ -19,6 +19,7 @@ import Config from "./config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
 import DyadMoves from "./DyadMoves.js";
+import base64 from "./base64.js";
 /*::
 import type DyadMovesType from "./DyadMoves.js";
 */
@@ -46,8 +47,9 @@ const [styles] = createStyles(DyadCss);
 // -----------------------------------------------------------------------------
 /*::
 type Props = {
-  pole1: string,
-  pole2: string,
+  question?: string,
+  pole1?: string,
+  pole2?: string,
   sessionId: string,
 };
 */
@@ -56,10 +58,7 @@ const DyadReadin = (props /*: Props */) => {
     AppContext,
   );
 
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-  const uniqueId = getRandomInt(Date.now()).toString();
+  dispatch({ type: "sessionId", payload: props.sessionId });
 
   // Happens once, on load
   useEffect(() => {
@@ -70,95 +69,113 @@ const DyadReadin = (props /*: Props */) => {
       document.getElementById("slider") || null;
     const body /*: HTMLElement  | null */ = document.body || null;
     if (dot !== null && slider !== null && body !== null) {
-      console.log("Adding EventListeners (happens on load)");
-      dispatch({ type: "sessionId", payload: props.sessionId });
-      dispatch({ type: "uniqueId", payload: uniqueId });
-      // Set some properties - x:0 is just a placeholder
-      const position /*: Object */ = {
-        x: 0,
-      };
-      const isMoving /*: Object */ = { status: false };
+      if (state.sessionId !== undefined && state.uniqueId !== undefined) {
+        console.log("Adding EventListeners (happens on load)");
+        // Set some properties - x:0 is just a placeholder
+        const position /*: Object */ = {
+          x: 0,
+        };
+        const isMoving /*: Object */ = { status: false };
 
-      // Add the event listeners for mousedown, mousemove, and mouseup
-      dot.addEventListener(
-        "mousedown",
-        (e /*: MouseEvent */) /*: void */ => {
-          //console.log("mousedown");
-          DyadMoves.startMove(isMoving);
-          //console.log(isMoving.status);
-        },
-        { once: false },
-      );
+        // Add the event listeners for mousedown, mousemove, and mouseup
+        dot.addEventListener(
+          "mousedown",
+          (e /*: MouseEvent */) /*: void */ => {
+            //console.log("mousedown");
+            DyadMoves.startMove(isMoving);
+            //console.log(isMoving.status);
+          },
+          { once: false },
+        );
 
-      slider.addEventListener(
-        "mousemove",
-        (e /*: MouseEvent */) /*: void */ => {
-          if (isMoving.status === true) {
-            //console.log("mousemove");
-          }
-          DyadMoves.movingMouse(
-            slider,
-            dot,
-            e,
-            position,
-            isMoving,
-            DyadMoves.moveDot,
-          );
-        },
-        { once: false },
-      );
-      if (state.sessionId === undefined) {
-        console.log("Happens once each session");
+        slider.addEventListener(
+          "mousemove",
+          (e /*: MouseEvent */) /*: void */ => {
+            if (isMoving.status === true) {
+              //console.log("mousemove");
+            }
+            DyadMoves.movingMouse(
+              slider,
+              dot,
+              e,
+              position,
+              isMoving,
+              DyadMoves.moveDot,
+            );
+          },
+          { once: false },
+        );
         body.addEventListener(
           "mouseup",
           (e /*: MouseEvent */) /*: void */ => {
             console.log("mouseup");
             DyadMoves.stopMove(slider, position, isMoving, dispatch);
-            DyadMoves.savePosition(slider, props.sessionId, uniqueId, position);
+            DyadMoves.savePosition(
+              slider,
+              state.sessionId,
+              state.uniqueId,
+              position,
+              dispatch,
+            );
+
             //console.log(isMoving.status);
           },
           { once: false },
         );
+
+        // Add the event listeners for touchstart, touchmove, and touchend
+        dot.addEventListener(
+          "touchstart",
+          (e /*: TouchEvent */) /*: void */ => {
+            //console.log("touchstart");
+            DyadMoves.startMove(isMoving);
+            //console.log(isMoving.status);
+          },
+          { once: false },
+        );
+
+        slider.addEventListener(
+          "touchmove",
+          (e /*: TouchEvent */) /*: void */ => {
+            //console.log("touchmove");
+            DyadMoves.movingTouch(
+              slider,
+              dot,
+              e,
+              position,
+              isMoving,
+              DyadMoves.moveDot,
+            );
+          },
+          { once: false },
+        );
+
+        body.addEventListener(
+          "touchend",
+          (e /*: TouchEvent */) /*: void */ => {
+            //console.log("touchend");
+            DyadMoves.stopMove(slider, position, isMoving, dispatch);
+            DyadMoves.savePosition(
+              slider,
+              state.sessionId,
+              state.uniqueId,
+              position,
+              dispatch,
+            );
+          },
+          { once: false },
+        );
+      } else if (state.sessionId !== undefined) {
+        dispatch({
+          type: "uniqueId",
+          payload: ((max /*: number */) /*: string */ => {
+            const uniqueId = Math.floor(Math.random() * Math.floor(max));
+            return uniqueId.toString();
+          })(Date.now()),
+        });
       }
-
-      // Add the event listeners for touchstart, touchmove, and touchend
-      dot.addEventListener(
-        "touchstart",
-        (e /*: TouchEvent */) /*: void */ => {
-          //console.log("touchstart");
-          DyadMoves.startMove(isMoving);
-          //console.log(isMoving.status);
-        },
-        { once: false },
-      );
-
-      slider.addEventListener(
-        "touchmove",
-        (e /*: TouchEvent */) /*: void */ => {
-          //console.log("touchmove");
-          DyadMoves.movingTouch(
-            slider,
-            dot,
-            e,
-            position,
-            isMoving,
-            DyadMoves.moveDot,
-          );
-        },
-        { once: false },
-      );
-
-      body.addEventListener(
-        "touchend",
-        (e /*: TouchEvent */) /*: void */ => {
-          //console.log("touchend");
-          DyadMoves.stopMove(slider, position, isMoving, dispatch);
-          DyadMoves.savePosition(slider, props.sessionId, uniqueId, position);
-        },
-        { once: false },
-      );
     }
-  }, []);
+  }, [state.sessionId, state.uniqueId]);
 
   // Happens when the dot is on the move
   useEffect(() => {
@@ -189,6 +206,11 @@ const DyadReadin = (props /*: Props */) => {
       <${Version} version="${Config.VERSION}" />
       <${FullscreenToggle} />
       <div className="${styles.dyadContainer}">
+        <div className="${styles.questionContainer}">
+          <p className="${styles.question}" data-cy="question">
+            ${base64.decode(props.question || "")}
+          </p>
+        </div>
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
             <div
@@ -196,7 +218,7 @@ const DyadReadin = (props /*: Props */) => {
               data-cy="pole1"
               className="${styles.pole} ${styles.pole1}"
             >
-              ${props.pole1}
+              ${base64.decode(props.pole1 || "")}
             </div>
           </div>
           <div className="${styles.sliderContainer}">
@@ -210,7 +232,7 @@ const DyadReadin = (props /*: Props */) => {
               data-cy="pole2"
               className="${styles.pole} ${styles.pole2}"
             >
-              ${props.pole2}
+              ${base64.decode(props.pole2 || "")}
             </div>
           </div>
         </div>

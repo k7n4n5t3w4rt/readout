@@ -1,22 +1,23 @@
 // @flow
+import Config from "./config.js";
 export default {
   savePosition: (
     slider /*: HTMLElement */,
     sessionId /*: string */,
     uniqueId /*: string */,
     position /*: Object */,
+    dispatch /*: function */,
   ) /*: void */ => {
     try {
       window.navigator.vibrate(200);
     } catch (error) {}
-
     const percentage = Math.round(
       (position.x / (slider.offsetWidth - 40)) * 100,
     );
     console.log("Position saving...", percentage);
     // `https://easy--prod-welkmofgdq-uc.a.run.app/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
     fetch(
-      `http://localhost:5000/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
+      `${Config.EASY}/dyad-save?sessionId=${sessionId}&uniqueId=${uniqueId}&position=${percentage}`,
       {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
