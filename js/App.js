@@ -6,6 +6,14 @@ import DyadReadout from "./DyadReadout.js";
 import Router from "../web_modules/preact-router.js";
 import htm from "../web_modules/htm.js";
 import { AppProvider } from "./AppContext.js";
+import base64url from "../web_modules/base64url.js";
+if (typeof atob === "undefined") {
+  const atob = base64url.decode;
+}
+if (typeof btoa === "undefined") {
+  const btoa = base64url.encode;
+}
+
 const html = htm.bind(h);
 
 /*::
@@ -25,9 +33,9 @@ const App /*: function */ = (props /*: Props */) => {
       window.location.search,
     );
     // $FlowFixMe
-    pole1 = searchParams.get("pole1") || btoa("Left");
+    pole1 = searchParams.get("pole1") || btoa(".");
     // $FlowFixMe
-    pole2 = searchParams.get("pole2") || btoa("Right");
+    pole2 = searchParams.get("pole2") || btoa(".");
     // $FlowFixMe
     sessionId = searchParams.get("sessionId") || "example";
   }

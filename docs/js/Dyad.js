@@ -10,6 +10,7 @@ import htm from "../web_modules/htm.js";
 import screenfull from "../web_modules/screenfull.js";
 import Version from "./Version.js";
 import FullscreenToggle from "./FullscreenToggle.js";
+import DyadFormInputQuestion from "./DyadFormInputQuestion.js";
 import DyadFormInputPole1 from "./DyadFormInputPole1.js";
 import DyadFormInputPole2 from "./DyadFormInputPole2.js";
 import {
@@ -20,6 +21,7 @@ import {
 import Config from "./config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
+import base64 from "./base64.js";
 
 const html = htm.bind(h);
 
@@ -53,6 +55,7 @@ const Dyad = (props /*: Props */) => {
   const [state, dispatch] /*: [ AppState, function] */ = useContext(AppContext);
   const [pole1, setPole1] = useState("");
   const [pole2, setPole2] = useState("");
+  const [question, setQuestion] = useState("");
 
   const sessionId =
     // Happens when the dot is on the move
@@ -71,8 +74,16 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            const localReadinLink = `readin?pole1=${pole1}&pole2=${pole2}&sessionId=${state.sessionId}`;
-            const localReadoutLink = `readout?pole1=${pole1}&pole2=${pole2}&sessionId=${state.sessionId}`;
+            const localReadinLink = `readin?question=${base64.encode(
+              question,
+            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
+              pole2,
+            )}&sessionId=${state.sessionId}`;
+            const localReadoutLink = `readout?question=${base64.encode(
+              question,
+            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
+              pole2,
+            )}&sessionId=${state.sessionId}`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
             if (
               navigator !== undefined &&
@@ -108,6 +119,9 @@ const Dyad = (props /*: Props */) => {
           }}"
         >
           <fieldset>
+            <div class="row">
+              <${DyadFormInputQuestion} setQuestionState="${setQuestion}" />
+            </div>
             <div class="row">
               <${DyadFormInputPole1} setPole1State="${setPole1}" />
             </div>

@@ -18,6 +18,7 @@ import {
 import Config from "./config.js";
 import { AppContext } from "./AppContext.js";
 import DyadCss from "./Dyad.css.js";
+import base64 from "./base64.js";
 
 const html = htm.bind(h);
 const seed /*: number */ = parseInt(
@@ -37,8 +38,9 @@ const [styles] = createStyles(DyadCss);
 
 /*::
 type Props = {
-  pole1: string,
-  pole2: string,
+  question?: string,
+  pole1?: string,
+  pole2?: string,
   sessionId: string,
 };
 */
@@ -67,6 +69,11 @@ const DyadReadout = (props /*: Props */) => {
       <${FullscreenToggle} />
       <${Version} version="${Config.VERSION}" />
       <div className="${styles.dyadContainer}">
+        <div className="${styles.questionContainer}">
+          <p className="${styles.question}" data-cy="question">
+            ${base64.decode(props.question || "")}
+          </p>
+        </div>
         <div id="dyad" className="${styles.dyad}">
           <div className="${styles.poleContainer}">
             <div
@@ -74,7 +81,7 @@ const DyadReadout = (props /*: Props */) => {
               data-cy="pole1"
               className="${styles.pole} ${styles.pole1}"
             >
-              ${props.pole1}
+              ${base64.decode(props.pole1 || "")}
             </div>
           </div>
           <div className="${styles.sliderContainer}">
@@ -95,7 +102,7 @@ const DyadReadout = (props /*: Props */) => {
               data-cy="pole2"
               className="${styles.pole} ${styles.pole2}"
             >
-              ${props.pole2}
+              ${base64.decode(props.pole2 || "")}
             </div>
           </div>
         </div>

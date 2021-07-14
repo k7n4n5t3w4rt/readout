@@ -6,6 +6,7 @@ module.exports = {
   plugins: [],
   exclude: ["**/*"],
   install: [
+    "base64url",
     "htm",
     "immer",
     "preact",
