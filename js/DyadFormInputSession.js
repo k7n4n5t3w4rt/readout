@@ -6,30 +6,27 @@ const html = htm.bind(h);
 
 /*::
 type Props = {
-  setQuestionState: function
+  setSessionState: function
 };
 */
-const DyadFormInputQuestion = (props /*: Props */) => {
+const DyadSession = (props /*: Props */) => {
   const onInputKey = (e /*: SyntheticInputEvent<EventTarget> */) => {
-    props.setQuestionState(e.target.value);
+    props.setSessionState(e.target.value);
   };
 
   return html`
     <div class="input-field">
       <input
         type="text"
-        data-cy="question"
-        name="question"
+        data-cy="session"
+        name="session"
         onInput="${onInputKey}"
         type="text"
         size="40"
-        pattern=".+"
-        title="Letters, numbers and spaces only."
-        required
+        pattern="[A-Za-z0-9]+"
+        title="Letters and numbers only."
       />
-      <label class="no-pointer-event" for="pole1"
-        >Question<abbr title="required" aria-label="required">*</abbr></label
-      >
+      <label class="no-pointer-event" for="pole1">Session ID</label>
       <div class="helper-text" data-cy="key-helper-text">
         The question we're asking.
       </div>
@@ -37,4 +34,4 @@ const DyadFormInputQuestion = (props /*: Props */) => {
   `;
 };
 
-export default DyadFormInputQuestion;
+export default DyadSession;

@@ -13,6 +13,7 @@ import FullscreenToggle from "./FullscreenToggle.js";
 import DyadFormInputQuestion from "./DyadFormInputQuestion.js";
 import DyadFormInputPole1 from "./DyadFormInputPole1.js";
 import DyadFormInputPole2 from "./DyadFormInputPole2.js";
+import DyadFormInputSession from "./DyadFormInputSession.js";
 import {
   rawStyles,
   createStyles,
@@ -47,8 +48,6 @@ const [styles] = createStyles(DyadCss);
 
 /*::
 type Props = {
-  pole1: string,
-  pole2: string,
 };
 */
 const Dyad = (props /*: Props */) => {
@@ -56,12 +55,14 @@ const Dyad = (props /*: Props */) => {
   const [pole1, setPole1] = useState("");
   const [pole2, setPole2] = useState("");
   const [question, setQuestion] = useState("");
+  const [session, setSession] = useState("");
 
   const sessionId =
     // Happens when the dot is on the move
     useEffect(() => {
-      dispatch({ type: "sessionId", payload: Date.now().toString() });
-    }, []);
+      let newSession /*: string */ = session || Date.now().toString();
+      dispatch({ type: "sessionId", payload: newSession });
+    }, [, session]);
 
   return html`
     <div className="${styles.container}">
@@ -127,6 +128,9 @@ const Dyad = (props /*: Props */) => {
             </div>
             <div class="row ${styles.lastRow}">
               <${DyadFormInputPole2} setPole2State="${setPole2}" />
+            </div>
+            <div class="row ${styles.lastRow}">
+              <${DyadFormInputSession} setSessionState="${setSession}" />
             </div>
             <div class="row">
               <button data-cy="go" class="btn-small blue" type="submit">

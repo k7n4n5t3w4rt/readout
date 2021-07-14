@@ -14,6 +14,7 @@ context("Actions", () => {
     cy.get("input[data-cy=question]").should("exist");
     cy.get("input[data-cy=pole1]").should("exist");
     cy.get("input[data-cy=pole2]").should("exist");
+    cy.get("input[data-cy=session]").should("exist");
   });
 
   it("Route /| The GO button is present", () => {
@@ -40,14 +41,15 @@ context("Actions", () => {
       cy.get("input[data-cy=question]").type("To be or not to be?");
       cy.get("input[data-cy=pole1]").type("Pole One");
       cy.get("input[data-cy=pole2]").type("Pole Two");
+      cy.get("input[data-cy=session]").type("PILOT");
       cy.get("button[data-cy=go]").click({ force: true });
       cy.location("search").should(
         "contain",
-        "?question=VG8gYmUgb3Igbm90IHRvIGJlPw==&pole1=UG9sZSBPbmU=&pole2=UG9sZSBUd28=&sessionId=",
+        "?question=VG8gYmUgb3Igbm90IHRvIGJlPw==&pole1=UG9sZSBPbmU=&pole2=UG9sZSBUd28=&sessionId=PILOT",
       );
-      //   cy.get("div[data-cy=question]").should("contain", "To be or not to be?");
-      //   cy.get("div[data-cy=pole1]").should("contain", "Pole One");
-      //   cy.get("div[data-cy=pole2]").should("contain", "Pole Two");
+      cy.get("p[data-cy=question]").should("contain", "To be or not to be?");
+      cy.get("div[data-cy=pole1]").should("contain", "Pole One");
+      cy.get("div[data-cy=pole2]").should("contain", "Pole Two");
     });
   });
 });
