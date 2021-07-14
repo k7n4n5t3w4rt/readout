@@ -32,6 +32,12 @@ export default {
     paddingRight: "20px",
     height: "100%",
   },
+  questionContainer: {
+    height: "45%",
+    display: "flex",
+    justifyContent: "space-around",
+    paddingTop: "60px",
+  },
   dyad: {
     display: "flex",
     justifyContent: "space-between",
@@ -39,14 +45,22 @@ export default {
     marginRight: "20px",
     paddingTop: "20px",
     paddingBottom: "20px",
-    height: "100%",
+    height: "55%",
   },
   poleContainer: {
     width: "20%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "start",
+  },
+  question: {
+    fontSize: "2em",
+    color: "orange",
+    userSelect: "none",
+    textAlign: "center",
+    marginTop: "auto",
+    marginBottom: "auto",
   },
   pole: {
     fontSize: "2em",
@@ -64,14 +78,14 @@ export default {
   },
   sliderContainer: {
     width: "80%",
-    height: "100%",
+    height: "i100%",
   },
   slider: {
     position: "relative",
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "start",
   },
   dot: {
     width: "40px",
