@@ -107,15 +107,22 @@ const DyadReadout = (props /*: Props */) => {
           </div>
         </div>
       </div>
+      <div
+        onClick=${clearReadout(props.sessionId, dispatch)}
+        data-cy="clear"
+        className="${styles.clear}"
+      >
+        CLEAR
+      </div>
     </div>
   `;
 };
 
-function fetchReadout(
+const fetchReadout = (
   slider /*: HTMLElement */,
   sessionId /*: string */,
   dispatch /*: function */,
-) {
+) /*: string | void */ => {
   //`https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
   fetch(`${Config.EASY}/dyad-read?sessionId=${sessionId}`, {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -151,6 +158,32 @@ function fetchReadout(
     .catch((e /*: Error */) /*: void */ => {
       console.error(e);
     });
-}
+};
 
+const clearReadout = (
+  sessionId /*: string */,
+  dispatch /*: function */,
+) /*: () => string | void */ => () /*: string | void */ => {
+  //`https://easy--prod-welkmofgdq-uc.a.run.app/dyad-read?sessionId=${sessionId}`,
+  fetch(`${Config.EASY}/dyad-clear?sessionId=${sessionId}`, {
+    method: "GET", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin - dies with "cors"
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+  })
+    .then((response /*: Object */) /*: Promise<string> */ => {
+      if (response.status !== undefined && response.status === "success") {
+        dispatch({ type: "readout", payload: [] });
+      }
+      return response.json();
+    })
+    .catch((e /*: Error */) /*: void */ => {
+      console.error(e);
+    });
+};
 export default DyadReadout;

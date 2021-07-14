@@ -67,6 +67,14 @@ export default {
     color: "orange",
     userSelect: "none",
   },
+  clear: {
+    cursor: "pointer",
+    fontSize: "2em",
+    color: "orange",
+    position: "absolute",
+    bottom: "20px",
+    right: "20px",
+  },
   pole1: {
     textAlign: "right",
     borderRight: "1px solid orange",
