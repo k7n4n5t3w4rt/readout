@@ -177,9 +177,7 @@ const clearReadout = (
     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
   })
     .then((response /*: Object */) /*: Promise<string> */ => {
-      if (response.status !== undefined && response.status === "success") {
-        dispatch({ type: "readout", payload: [] });
-      }
+      dispatch({ type: "readout", payload: [] });
       return response.json();
     })
     .catch((e /*: Error */) /*: void */ => {
