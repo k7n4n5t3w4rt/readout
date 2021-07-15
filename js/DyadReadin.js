@@ -239,7 +239,7 @@ const DyadReadin = (props /*: Props */) => {
         </div>
       </div>
       <div data-cy="readout" className="${styles.clear}">
-        <a href="/${base64.decode(props.readoutLink || "")}"> . </a>
+        <a href="${base64.decode(props.readoutLink || "")}"> . </a>
       </div>
     </div>
   `;
