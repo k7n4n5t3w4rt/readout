@@ -80,14 +80,14 @@ const Dyad = (props /*: Props */) => {
             )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
               pole2,
             )}&sessionId=${state.sessionId}`;
+            const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
             const localReadinLink = `readin?question=${base64.encode(
               question,
             )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
               pole2,
             )}&sessionId=${state.sessionId}&readoutLink=${base64.encode(
-              localReadoutLink,
+              "/" + localReadoutLink,
             )}`;
-            const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
             if (!window.open(absoluteReadoutLink, "_blank")) {
               if (
                 navigator !== undefined &&
