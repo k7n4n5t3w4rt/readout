@@ -86,11 +86,11 @@ const Dyad = (props /*: Props */) => {
               pole2,
             )}&sessionId=${state.sessionId}`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
-            if (
-              navigator !== undefined &&
-              navigator.permissions !== undefined
-            ) {
-              if (!window.open(absoluteReadoutLink, "_blank")) {
+            if (!window.open(absoluteReadoutLink, "_blank")) {
+              if (
+                navigator !== undefined &&
+                navigator.permissions !== undefined
+              ) {
                 navigator.permissions
                   .query({ name: "clipboard-write" })
                   .then((result) => {
