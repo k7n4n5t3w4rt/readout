@@ -58,9 +58,29 @@ const DyadReadin = (props /*: Props */) => {
   const [state /*: AppState */, dispatch /*: function */] = useContext(
     AppContext,
   );
+  const [feedback /*: boolean */, setFeedback /*: function */] = useState(
+    false,
+  );
 
   dispatch({ type: "sessionId", payload: props.sessionId });
 
+  useEffect(() => {
+    // Check that the DOM elements exist
+    const feedbackDiv /*: HTMLElement  | null */ =
+      document.getElementById("feedback") || null;
+
+    if (feedbackDiv !== null) {
+      if (feedback === true) {
+        feedbackDiv.style.display = "block";
+        const timeOutId = setTimeout(() => {
+          setFeedback(false);
+          feedbackDiv.style.display = "none";
+        }, 1000);
+      } else {
+        feedbackDiv.style.display = "none";
+      }
+    }
+  }, [, feedback]);
   // Happens once, on load
   useEffect(() => {
     // Check that the DOM elements exist
@@ -118,6 +138,7 @@ const DyadReadin = (props /*: Props */) => {
               position,
               dispatch,
             );
+            setFeedback(true);
 
             //console.log(isMoving.status);
           },
@@ -163,6 +184,7 @@ const DyadReadin = (props /*: Props */) => {
               position,
               dispatch,
             );
+            setFeedback(true);
           },
           { once: false },
         );
@@ -206,6 +228,11 @@ const DyadReadin = (props /*: Props */) => {
     <div className="${styles.container}">
       <${Version} version="${Config.VERSION}" />
       <${FullscreenToggle} />
+      <div id="feedback" data-cy="feedback" className="${styles.feedback}">
+        <div className="${styles.feedbackInner}">
+          Thanks!
+        </div>
+      </div>
       <div className="${styles.dyadContainer}">
         <div className="${styles.questionContainer}">
           <p className="${styles.question}" data-cy="question">

@@ -67,6 +67,20 @@ export default {
     color: "orange",
     userSelect: "none",
   },
+  feedback: {
+    fontSize: "2em",
+    color: "orange",
+    position: "absolute",
+    bottom: "20%",
+    width: "100%",
+  },
+  feedbackInner: {
+    border: "1px solid orange",
+    width: "200px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    textAlign: "center",
+  },
   clear: {
     cursor: "pointer",
     fontSize: "2em",
