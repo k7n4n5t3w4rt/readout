@@ -112,11 +112,11 @@ const Dyad = (props /*: Props */) => {
                       );
                     }
                   });
+              } else {
+                alert(
+                  `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                );
               }
-            } else {
-              alert(
-                `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
-              );
             }
             route(localReadinLink);
           }}"
