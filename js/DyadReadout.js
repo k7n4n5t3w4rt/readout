@@ -71,7 +71,7 @@ const DyadReadout = (props /*: Props */) => {
       <div className="${styles.dyadContainer}">
         <div className="${styles.questionContainer}">
           <p className="${styles.question}" data-cy="question">
-            ${base64.decode(props.question || "")}
+            READOUT: ${base64.decode(props.question || "")}
           </p>
         </div>
         <div id="dyad" className="${styles.dyad}">
