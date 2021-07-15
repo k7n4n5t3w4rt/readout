@@ -88,7 +88,7 @@ const Dyad = (props /*: Props */) => {
             )}&sessionId=${state.sessionId}&readoutLink=${base64.encode(
               "/" + localReadoutLink,
             )}`;
-            if (!window.open(absoluteReadoutLink, "_blank")) {
+            if (!window.open(localReadoutLink, "_blank")) {
               if (
                 navigator !== undefined &&
                 navigator.permissions !== undefined

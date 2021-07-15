@@ -59,7 +59,7 @@
     "lint": "prettier --check \"src/**/*.{js,jsx}\"",
     "screenfullfix": "grep -r -l _commonjsHelpers web_modules | xargs sed -i '' s/_commonjsHelpers/commonjshelpers/g $i && mv web_modules/common/_commonjsHelpers-1d2f7e84.js web_modules/common/commonjshelpers-1d2f7e84.js",
     "snowpack": "snowpack install && npm run screenfullfix",
-    "start": "VERSION=v0.7.4 EASY=https://easy--prod-welkmofgdq-uc.a.run.app node server/index.js",
+    "start": "VERSION=v0.7.5 EASY=https://easy--prod-welkmofgdq-uc.a.run.app node server/index.js",
     "start:wait-on": "npm start & wait-on http://localhost:4000",
     "start:in-background": "nohup node server/index.js &",
     "testy": "node --no-warnings server/testyrunner.js | faucet",
