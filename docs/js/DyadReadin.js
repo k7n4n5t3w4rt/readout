@@ -51,6 +51,7 @@ type Props = {
   pole1?: string,
   pole2?: string,
   sessionId: string,
+  readoutLink: string,
 };
 */
 const DyadReadin = (props /*: Props */) => {
@@ -236,6 +237,9 @@ const DyadReadin = (props /*: Props */) => {
             </div>
           </div>
         </div>
+      </div>
+      <div data-cy="readout" className="${styles.clear}">
+        <a href="/${base64.decode(props.readoutLink || "")}"> . </a>
       </div>
     </div>
   `;

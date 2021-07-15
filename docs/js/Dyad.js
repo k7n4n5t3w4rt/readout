@@ -75,16 +75,18 @@ const Dyad = (props /*: Props */) => {
           method="GET"
           onsubmit="${(e /*: Event */) => {
             e.preventDefault();
-            const localReadinLink = `readin?question=${base64.encode(
-              question,
-            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
-              pole2,
-            )}&sessionId=${state.sessionId}`;
             const localReadoutLink = `readout?question=${base64.encode(
               question,
             )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
               pole2,
             )}&sessionId=${state.sessionId}`;
+            const localReadinLink = `readin?question=${base64.encode(
+              question,
+            )}&pole1=${base64.encode(pole1)}&pole2=${base64.encode(
+              pole2,
+            )}&sessionId=${state.sessionId}&readoutLink=${base64.encode(
+              localReadoutLink,
+            )}`;
             const absoluteReadoutLink = `${document.location.href}${localReadoutLink}`;
             if (!window.open(absoluteReadoutLink, "_blank")) {
               if (
