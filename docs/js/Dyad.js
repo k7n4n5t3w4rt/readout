@@ -90,27 +90,29 @@ const Dyad = (props /*: Props */) => {
               navigator !== undefined &&
               navigator.permissions !== undefined
             ) {
-              navigator.permissions
-                .query({ name: "clipboard-write" })
-                .then((result) => {
-                  if (result.state == "granted" || result.state == "prompt") {
-                    /* write to the clipboard now */
-                    navigator.clipboard.writeText(absoluteReadoutLink).then(
-                      function () {
-                        alert(
-                          `This link to the readout has been saved to your clipboard. Paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
-                        );
-                        /* clipboard successfully set */
-                      },
-                      function () {
-                        alert(
-                          `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
-                        );
-                        /* clipboard write failed */
-                      },
-                    );
-                  }
-                });
+              if (!window.open(absoluteReadoutLink, "_blank")) {
+                navigator.permissions
+                  .query({ name: "clipboard-write" })
+                  .then((result) => {
+                    if (result.state == "granted" || result.state == "prompt") {
+                      /* write to the clipboard now */
+                      navigator.clipboard.writeText(absoluteReadoutLink).then(
+                        function () {
+                          alert(
+                            `This link to the readout has been saved to your clipboard. Paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                          );
+                          /* clipboard successfully set */
+                        },
+                        function () {
+                          alert(
+                            `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,
+                          );
+                          /* clipboard write failed */
+                        },
+                      );
+                    }
+                  });
+              }
             } else {
               alert(
                 `This link to the readout has NOT been saved to your clipboard. Copy it and paste it into a new browser tab:\n\n${absoluteReadoutLink}`,

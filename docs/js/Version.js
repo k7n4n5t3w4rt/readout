@@ -49,7 +49,9 @@ const Version = (props /*: Props */) => {
   const [state /*: AppState */, dispatch] = useContext(AppContext);
 
   return html` <div cy-data="version" className="${styles.version}">
-    <div className="${styles.versionNumber}">${props.version}</div>
+    <div className="${styles.versionNumber}">
+      <a href="/">${props.version}</a>
+    </div>
   </div>`;
 };
 
